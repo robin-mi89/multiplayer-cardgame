@@ -12,7 +12,7 @@ var passport = require('passport');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var memes = require('./routes/memes');
-
+var googleAuth = require('./routes/google-auth');
 var app = express();
 
 // view engine setup
@@ -41,7 +41,6 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -51,7 +50,7 @@ app.use(function(req, res, next) {
 
 // Import routes and give the server access to them.
 // Routes =============================================================
-//require("./routes/api-routes.js")(app);
+require("./routes/api-routes.js")(app, passport);
 
 // error handler
 app.use(function(err, req, res, next) {
