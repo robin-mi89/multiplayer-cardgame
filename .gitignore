@@ -34,3 +34,6 @@ npm-debug.log
 
 # VIM .swp files
 *.swp
+
+# Google secrets
+secrets.js
