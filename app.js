@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
+var passport = require('passport');
 
 
 // Add routes here
@@ -34,8 +35,9 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Setup root path of route (base of address for all routes)
+// app.use(express.session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
@@ -46,6 +48,10 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+// Import routes and give the server access to them.
+// Routes =============================================================
+//require("./routes/api-routes.js")(app);
 
 // error handler
 app.use(function(err, req, res, next) {
