@@ -10,6 +10,7 @@ var sassMiddleware = require('node-sass-middleware');
 // Add routes here
 var index = require('./routes/index');
 var users = require('./routes/users');
+var memes = require('./routes/memes');
 
 var app = express();
 
@@ -34,8 +35,10 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Setup root path of route (base of address for all routes)
 app.use('/', index);
 app.use('/users', users);
+app.use('/memes', memes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
