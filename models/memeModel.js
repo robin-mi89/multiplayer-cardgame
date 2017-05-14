@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes){
   return sequelize.define("Meme", {
-    title: {
+    name: {
       type: DataTypes.STRING,
       validate: {
         len:[1]
@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes){
       },
       allowNull: false
     }
-
+  },{
+    timestamps: false
   });
 };
