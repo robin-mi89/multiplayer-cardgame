@@ -1,10 +1,118 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
+
+<head>
+  <title>{{title}}</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="stylesheet" href="https://cdn.bootcss.com/hover.css/2.1.1/css/hover-min.css">
+</head>
+
+<body>
+  <div class="game-container">
+
+    <main>
+
+      <section class="topic-container">
+        <div class="topic-timer topic--spacing topic--border shadow">
+          <h2>Time: 10 </h2>
+        </div>
+
+        <img class="topic-image topic--spacing topic--border shadow" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+
+        <div id="score-container" class="topic--spacing topic--border shadow">
+          <h3>Scores</h3>
+          <p>5pt to win</p>
+          <hr/>
+          <h4 class="chosen">Player 1: 0 </h4>
+          <h4>Player 2: 0 </h4>
+          <h4>Player 3: 0 </h4>
+          <h4>Player 4: 0 </h4>
+        </div>
+
+      </section>
+      <section class="choice-container">
+        <div id="choice-card-container">
+          <div class="choice-card shadow">
+            <div class="choice-card-inner-border">
+              <img class="choice-card-img" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+            </div>
+          </div>
+          <div class="choice-card shadow">
+            <div class="choice-card-inner-border">
+              <img class="choice-card-img" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+            </div>
+          </div>
+
+          <div class="choice-card shadow">
+            <div class="choice-card-inner-border">
+              <img class="choice-card-img" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+            </div>
+          </div>
+          <div class="choice-card shadow">
+            <div class="choice-card-inner-border">
+              <img class="choice-card-img" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+            </div>
+          </div>
+        </div>
+        <div id="player-cards">
+          <div class="card card-selected hvr-grow-shadow">
+            <div class="card-inner-border">
+              <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card hvr-grow-shadow">
+            <div class="card-inner-border">
+              <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card hvr-grow-shadow">
+            <div class="card-inner-border">
+              <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card hvr-grow-shadow">
+            <div class="card-inner-border">
+              <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card hvr-grow-shadow">
+            <div class="card-inner-border">
+              <div class="card-block">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+      <section class="chat">
+        <div class="chat-display">
+          <p>Player1: has joined.</p>
+          <p>Player2: has joined.</p>
+          <p>Player3: has joined.</p>
+          <p>Player4: has joined.</p>
+        </div>
+        <div class="chat-input">
+          <div class="form-group">
+
+            <input type="text" class="form-control" id="chat-box">
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
   </body>
 </html>
