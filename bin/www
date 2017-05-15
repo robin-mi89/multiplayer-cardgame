@@ -23,19 +23,8 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io')(server);
 
-
-// TODO: Modularize the backend Socket Implementation
-
-io.on('connection', function(socket){
-  console.log('a user connected');
-
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-
-});
-
-
+// Here we launch socket io backend-events (app-events/index.js)
+require('../app-events/')(io);
 
 /**
  * Listen on provided port, on all network interfaces.

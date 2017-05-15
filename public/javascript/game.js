@@ -1,15 +1,18 @@
-$(function () {
+$(document).ready(function () {
   var socket = io();
 
   $('#message-submit').on('click', function(e) {
     e.preventDefault();
     var messageInput = $('#message-input').val().trim();
 
-    if(messageInput){
+    if(messageInput !== ''){
       console.log(messageInput);
 
+      socket.emit('chat message', messageInput);
       $('#message-input').val('')
     }
+
+
 
   });
 
@@ -21,3 +24,5 @@ $(function () {
   // });
 
 });
+
+
