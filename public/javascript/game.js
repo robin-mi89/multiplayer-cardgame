@@ -11,16 +11,19 @@ $(document).ready(function() {
       socket.emit('chat message', messageInput);
       $('#message-input').val('')
     }
-    var msg = "<p class='chat-p'>" + messageInput + "</p>";
-    $(".chat-display").append(msg);
 
   });
 
-  // $('#chat-box').submit(function(){
-  //   console.log("Enter pressed");
-  //   socket.emit('chat message', $('#m').val());
-  //   $('#m').val('');
-  //   return false;
-  // });
+  socket.on('chat message', function(messsage) {
+
+    // TODO: MESSSAGES WILL HAVE USER INFO APPENDED
+    var msg = "<p class='chat-p'>" + messsage + "</p>";
+    var $chatDsp = $(".chat-display");
+
+    $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
+    $chatDsp.append(msg);
+    $chatDsp.animate({ scrollTop: $chatDsp[0].scrollHeight }, "slow");
+
+  });
 
 });
