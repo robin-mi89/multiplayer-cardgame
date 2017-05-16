@@ -10,29 +10,30 @@
 </head>
 
 <body>
-  <div class="game-container">
+  <di<div class="game-container">
 
     <main>
 
       <section class="topic-container">
-        <div class="topic-timer topic--spacing topic--border shadow">
-          <h2>Time: 10 </h2>
-        </div>
+
 
         <img class="topic-image topic--spacing topic--border shadow" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
 
         <div id="score-container" class="topic--spacing topic--border shadow">
-          <h3>Scores</h3>
-          <p>5pt to win</p>
+          <h4>Scores <br/><span class="sub-text">5pts to Win</span></h4>
+
           <hr/>
-          <h4 class="chosen">Player 1: 0 </h4>
-          <h4>Player 2: 0 </h4>
-          <h4>Player 3: 0 </h4>
-          <h4>Player 4: 0 </h4>
+          <h5 class="chosen">Player 1: 0 </h5>
+          <h5>Player 2: 0 </h5>
+          <h5>Player 3: 0 </h5>
+          <h5>Player 4: 0 </h5>
         </div>
 
       </section>
       <section class="choice-container">
+        <div class="timer shadow">
+          <h3 id="time">Time Remaining: 30 </h3>
+        </div>
         <div id="choice-card-container">
           <div class="choice-card shadow">
             <div class="choice-card-inner-border">
@@ -57,56 +58,30 @@
           </div>
         </div>
         <div id="player-cards">
-          <div class="card card-selected hvr-grow-shadow">
+
+          <div class="card shadow">
             <div class="card-inner-border">
               <div class="card-block">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text">
+
+                  <div class="form-group meme-input">
+                    <input id="top-text" placeholder="TOP TEXT" type="text" class="form-control ">
+                    <input id="bottom-text" placeholder="BOTTOM TEXT" type="text" class="form-control">
+                  </div>
+                </p>
               </div>
             </div>
           </div>
-          <div class="card hvr-grow-shadow">
-            <div class="card-inner-border">
-              <div class="card-block">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-          </div>
-          <div class="card hvr-grow-shadow">
-            <div class="card-inner-border">
-              <div class="card-block">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-          </div>
-          <div class="card hvr-grow-shadow">
-            <div class="card-inner-border">
-              <div class="card-block">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-          </div>
-          <div class="card hvr-grow-shadow">
-            <div class="card-inner-border">
-              <div class="card-block">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
-          </div>
+
+          <button id="meme-submit" type="button" class="btn  btn-block btn-success">Submit</button>
+
         </div>
 
 
       </section>
       <section class="chat">
         <div class="chat-display">
-
-
-          <!--Temp MUST IMPLEMENT LIVE AND REMOVE-->
-          <p>Player1: has joined.</p>
-          <p>Player2: has joined.</p>
-          <p>Player3: has joined.</p>
-          <p>Player4: has joined.</p>
-          <!--Temp MUST IMPLEMENT LIVE AND REMOVE-->
-
+        
         </div>
         <form>
           <div class="input-group">
@@ -120,12 +95,13 @@
 
     </main>
 
-  </div>
-  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <!--Supposedly SocketIO is automatically exposed to front end-->
-  <script src="/socket.io/socket.io.js"></script>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <!--Supposedly SocketIO is automatically exposed to front end-->
+    <script src="/socket.io/socket.io.js"></script>
 
-  <!--Temporary until code is consolidated (Multi-module)-->
-  <script src="/javascript/game.js"></script>
-  </body>
+    <!--Temporary until code is consolidated (Multi-module)-->
+    <script src="/javascript/game.js"></script>
+</body>
+
 </html>
