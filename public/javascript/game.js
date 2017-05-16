@@ -22,8 +22,16 @@ $(document).ready(function() {
 
     $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
     $chatDsp.append(msg);
-    $chatDsp.animate({ scrollTop: $chatDsp[0].scrollHeight }, "slow");
+    $chatDsp.animate({
+      scrollTop: $chatDsp[0].scrollHeight
+    }, "slow");
 
   });
+  var randomMemeImage = function() {
+    $.get("/memes/one", function(data) {
 
+      $('.topic-image').attr("src", data[0].url);
+    });
+  };
+  randomMemeImage();
 });
