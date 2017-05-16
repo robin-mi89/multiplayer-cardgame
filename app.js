@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport');
+var session = require('express-session');
 
 
 // Add routes here
@@ -35,12 +36,13 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.session({ secret: 'keyboard cat' }));
+app.use(session({ secret: 'whynotzoidberg' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
+app.use('/auth/google', googleAuth);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -50,7 +52,6 @@ app.use(function(req, res, next) {
 
 // Import routes and give the server access to them.
 // Routes =============================================================
-require("./routes/api-routes.js")(app, passport);
 
 // error handler
 app.use(function(err, req, res, next) {

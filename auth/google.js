@@ -5,9 +5,9 @@ var secrets = require('../config/secrets.js');
 //   profile), and invoke a callback with a user object.
 module.exports = {
 'googleAuth' : {
-        'clientID'      : secrets.CLIENT_ID,
-        'clientSecret'  : secrets.CLIENT_SECRET,
-        'callbackURL'   : 'http://localhost:8080/auth/google/callback'
+        clientID      : secrets.CLIENT_ID,
+        clientSecret  : secrets.CLIENT_SECRET,
+        callbackURL   : 'http://localhost:8080/auth/google/callback'
     }
 }
 
