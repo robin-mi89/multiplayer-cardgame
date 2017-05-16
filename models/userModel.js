@@ -22,6 +22,11 @@ module.exports = function(sequelize, DataTypes)
     email:
     {
         type: DataTypes.STRING
+    },
+    wins:
+    {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
     //TODO: Continue to expand User (Robin Si -- LEAD)
 

@@ -18,9 +18,14 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
+        console.log("in deserialize");
+        db.User.findAll(
+                {
+                    where: {googleID: id}
+                }).then(dbUser => 
+                {
+                    done(err, dbUser);
+                });
     });
 
     // =========================================================================
@@ -30,13 +35,16 @@ module.exports = function(passport) {
         clientID        : secrets.secrets.CLIENT_ID,
         clientSecret    : secrets.secrets.CLIENT_SECRET,
         callbackURL     : secrets.secrets.CALLBACK_URL,
+        profileFields   : ['id', 'name', 'email'],
+        passReqToCallback : true
 
     },
-    function(token, refreshToken, profile, done) {
-        console.log("token: " + token);
-        console.log("refresh token: " + refreshToken);
-        console.log("profile: " + profile);
-        console.log("done: " + done);
+    function(req, token, refreshToken, profile, done) {
+        console.log("token: " + JSON.stringify(token));
+        console.log("refresh token: " + JSON.stringify(refreshToken));
+        console.log("profile: " + JSON.stringify(profile));
+        console.log("done: " + JSON.stringify(done));
+        console.log("\n\n==============================================")
         //make the code asynchronous
         //User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
@@ -45,17 +53,17 @@ module.exports = function(passport) {
                 db.User.findAll(
                 {
                     where: {googleID: profile.id}
-                }).then(dbUser => 
+                }).then((dbUser) => 
                 {
-                    if (err) {throw err};
-
-                    if (dbUser)
+                    if (dbUser.length > 0)
                     {
-                        return done(err, dbUser);;
+                        console.log("found user");
+                        console.log(dbUser);
+                        return done(null, dbUser);;
                     }
                     else
                     {
-
+                        console.log("did not find user");
                         db.User.create(
                         {
                         googleID : profile.id,
@@ -64,7 +72,7 @@ module.exports = function(passport) {
                         email : profile.emails[0].value // pull the first email
                         }).then(function(dbUser)
                         {
-                            return done(err, dbUser);
+                            return done(null, dbUser);
                         });
                     }
                 })

@@ -9,4 +9,11 @@ router.get('/callback',
                 successRedirect : '/profile',
                 failureRedirect : '/'
             }));
+// router.get('/unlink/google', isLoggedIn, function(req, res) {
+//     var user          = req.user;
+//     user.google.token = undefined;
+//     user.save(function(err) {
+//         res.redirect('/profile');
+//     });
+// });
 module.exports = router;

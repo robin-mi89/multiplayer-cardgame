@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport');
 var session = require('express-session');
-
+var flash = require('connect-flash');
 
 // Add routes here
 var index = require('./routes/index');
@@ -39,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'whynotzoidberg' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
