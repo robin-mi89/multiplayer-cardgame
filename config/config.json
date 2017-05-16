@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "arboreal07",
     "database": "memeski",
     "host": "127.0.0.1",
     "dialect": "mysql"
