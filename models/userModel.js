@@ -1,13 +1,33 @@
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
-    user_name: {
+module.exports = function(sequelize, DataTypes) 
+{
+  return sequelize.define('User', 
+  {
+    user_name: 
+    {
       type: DataTypes.STRING,
-      validate:{
+      validate:
+      {
         len:[2]
       },
       allowNull: false
+    },
+    googleID: 
+    {
+        type: DataTypes.STRING
+    },
+    token:
+    {
+        type: DataTypes.STRING
+    },
+    email:
+    {
+        type: DataTypes.STRING
+    },
+    wins:
+    {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
-
     //TODO: Continue to expand User (Robin Si -- LEAD)
 
   })
