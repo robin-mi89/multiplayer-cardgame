@@ -28,7 +28,6 @@ module.exports = function(sequelize, DataTypes)
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
-    //TODO: Continue to expand User (Robin Si -- LEAD)
 
   })
 };

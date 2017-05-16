@@ -27,10 +27,11 @@ $(document).ready(function() {
     }, "slow");
 
   });
+
   var randomMemeImage = function() {
     $.get("/memes/one", function(data) {
-
       $('.topic-image').attr("src", data[0].url);
+
     });
   };
   randomMemeImage();

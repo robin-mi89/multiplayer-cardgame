@@ -26,4 +26,5 @@ router.get('/', function(req, res, next) {
 //     res.redirect('/');
 //   });
 //   //<a href="/auth/google">Sign In with Google</a>
- module.exports = router;
+
+module.exports = router;
