@@ -5,13 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
-
+var passport = require('passport');
+var session = require('express-session');
+var flash = require('connect-flash');
 
 // Add routes here
 var index = require('./routes/index');
 var users = require('./routes/users');
 var memes = require('./routes/memes');
-
+var googleAuth = require('./routes/google-auth');
 var app = express();
 
 // view engine setup
@@ -34,18 +36,23 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Setup root path of route (base of address for all routes)
+app.use(session({ secret: 'whynotzoidberg' }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
-
+app.use('/auth/google', googleAuth);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
+// Import routes and give the server access to them.
+// Routes =============================================================
 
 // error handler
 app.use(function(err, req, res, next) {
