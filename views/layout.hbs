@@ -98,21 +98,34 @@
       </section>
       <section class="chat">
         <div class="chat-display">
+
+
+          <!--Temp MUST IMPLEMENT LIVE AND REMOVE-->
           <p>Player1: has joined.</p>
           <p>Player2: has joined.</p>
           <p>Player3: has joined.</p>
           <p>Player4: has joined.</p>
-        </div>
-        <div class="chat-input">
-          <div class="form-group">
+          <!--Temp MUST IMPLEMENT LIVE AND REMOVE-->
 
-            <input type="text" class="form-control" id="chat-box">
-          </div>
         </div>
+        <form>
+          <div class="input-group">
+            <input type="text" id="message-input" class="form-control" placeholder="">
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" id="message-submit" type="submit" style="display: none;">Send</button>
+            </span>
+          </div>
+        </form>
       </section>
 
     </main>
 
   </div>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!--Supposedly SocketIO is automatically exposed to front end-->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!--Temporary until code is consolidated (Multi-module)-->
+  <script src="/javascript/game.js"></script>
   </body>
 </html>
