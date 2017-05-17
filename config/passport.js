@@ -1,7 +1,7 @@
 // config/passport.js
 
 // load all the things we need
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
 var db = require("../models");
@@ -13,7 +13,9 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        done(err, user.id);
+        // console.log("in serialize");
+        // console.log("user: " + JSON.stringify(user));
+        done(null, user[0].id);
     });
 
     // used to deserialize the user
@@ -21,10 +23,13 @@ module.exports = function(passport) {
         console.log("in deserialize");
         db.User.findAll(
                 {
-                    where: {googleID: id}
-                }).then(dbUser => 
+                    where: {id: id}
+                }).then(function(dbUser) 
                 {
-                    done(err, dbUser);
+                    var temp = dbUser[0].dataValues;
+                    
+                    var user = {user_name: temp.user_name, email: temp.email, wins: temp.wins}
+                    done(null, user);
                 });
     });
 
@@ -35,11 +40,11 @@ module.exports = function(passport) {
         clientID        : secrets.secrets.CLIENT_ID,
         clientSecret    : secrets.secrets.CLIENT_SECRET,
         callbackURL     : secrets.secrets.CALLBACK_URL,
-        profileFields   : ['id', 'name', 'email'],
         passReqToCallback : true
 
     },
     function(req, token, refreshToken, profile, done) {
+        console.log("req: " + JSON.stringify(req.body));
         console.log("token: " + JSON.stringify(token));
         console.log("refresh token: " + JSON.stringify(refreshToken));
         console.log("profile: " + JSON.stringify(profile));
@@ -53,7 +58,7 @@ module.exports = function(passport) {
                 db.User.findAll(
                 {
                     where: {googleID: profile.id}
-                }).then((dbUser) => 
+                }).then(function(dbUser)
                 {
                     if (dbUser.length > 0)
                     {
@@ -63,7 +68,7 @@ module.exports = function(passport) {
                     }
                     else
                     {
-                        console.log("did not find user");
+                        // console.log("did not find user");
                         db.User.create(
                         {
                         googleID : profile.id,

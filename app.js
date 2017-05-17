@@ -14,6 +14,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var memes = require('./routes/memes');
 var googleAuth = require('./routes/google-auth');
+
 var app = express();
 
 // view engine setup
@@ -23,12 +24,13 @@ app.set('view options', {layout: 'layout'});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+require('./config/passport.js')(passport);
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: true
 }));
-app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
@@ -41,10 +43,11 @@ app.use(session({ secret: 'whynotzoidberg' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/memes', memes);
-app.use('/auth/google', googleAuth);
+app.use('', googleAuth);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -54,7 +57,7 @@ app.use(function(req, res, next) {
 
 // Import routes and give the server access to them.
 // Routes =============================================================
-
+//
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

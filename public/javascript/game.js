@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  console.log(user._id);
+  console.log(user.local.email);
+
   var socket = io();
 
   $('#message-submit').on('click', function(e) {

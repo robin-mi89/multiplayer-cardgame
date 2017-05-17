@@ -3,17 +3,36 @@ var router = express.Router();
 var passport = require('passport');
 require('../config/passport')(passport); 
 
-router.get('', passport.authenticate('google', { scope : ['profile', 'email'] }));
-router.get('/callback',
-            passport.authenticate('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
+router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google/callback',
+            passport.authenticate('google', 
+            {
+                successRedirect : '/',
+                failureRedirect : '/',
+                function(req, res)
+                {
+                    console.log(req.session);
+                }
             }));
-// router.get('/unlink/google', isLoggedIn, function(req, res) {
-//     var user          = req.user;
-//     user.google.token = undefined;
-//     user.save(function(err) {
-//         res.redirect('/profile');
-//     });
-// });
+
+router.get('/api/user', function(req, res)
+{
+    console.log(req.session);
+    console.log(req.user);
+    res.json(req.user);
+})
+
+router.get('/logout', function(req, res) 
+{
+    req.logout();
+    res.redirect('/');
+});
+
+router.get('/api/user', function(req, res)
+{
+    console.log(req.session);
+    res.json({user: req.user});
+});
+
+
 module.exports = router;
