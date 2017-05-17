@@ -10,6 +10,8 @@ $(document).ready(function() {
     // TODO: DEBUGGING FOR NOW
     //{ user_name: 'Misha Metrikin',email: 'metrikin@gmail.com',wins: 0 }
 
+    // TODO:(Victor \\ Misha \\ Robin) Arrange the "Scores " panel here..
+
     socket.emit('player join', self);
 
     socket.on("userID", function(userID) {
