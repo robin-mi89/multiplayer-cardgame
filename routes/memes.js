@@ -4,23 +4,18 @@
 var express = require('express');
 var db = require('../models');
 var router = express.Router();
+var Sequelize = require('sequelize');
 
 router.get('/one', function(req, res, next) {
-  db.Meme.findAll({
-    attributes: ["id"]
-  }).then(function(data) {
-    // console.log(data.length);
-    var randomId = randomMemeId(data.length);
 
-    db.Meme.findAll({
-      where: {
-        id: randomId
-      }
-    }).then(function(meme) {
-      // console.log(meme);
-      res.json(meme);
-    });
+  db.Meme.findOne({
+    order: [
+      Sequelize.fn('RAND'),
+    ]
+  }).then(function(data) {
+    res.json(data);
   });
+
 });
 
 router.get('/all', function(req, res, next) {
@@ -29,8 +24,9 @@ router.get('/all', function(req, res, next) {
 
   });
 });
+
 var randomMemeId = function(count) {
   return Math.floor(Math.random() * count) + 1
-}
+};
 
 module.exports = router;
