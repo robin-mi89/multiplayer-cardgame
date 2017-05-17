@@ -2,8 +2,10 @@ Sequelize = require('sequelize');
 
 module.exports = function(io, db) {
 
-  var players = [];
-  var judgeInd = 0;
+  var players   = [];
+  var judgeInd  = 0;
+  var countdown = 30;
+  var round     = {};
 
   io.on('connection', function(socket){
     require('./chat')(socket, db);
@@ -32,6 +34,23 @@ module.exports = function(io, db) {
 
     });
 
+
+    // TODO: NEEDS DEBUGGING, -- see Mikhail M.
+
+    // socket.on('disconnect', function(){
+    //
+    //   // Rebuild player array without disconnected user
+    //   var remain = [];
+    //
+    //   players.map(function(each) {
+    //     if(!each.id === socket.id){
+    //         remain.push(each);
+    //     }
+    //   }, this);
+    //   players = remain;
+    //
+    // });
+
   });
 
   function StartGame(){
@@ -42,14 +61,26 @@ module.exports = function(io, db) {
       ]
     }).then(function(meme){
 
-      var round = {
+      round = {
         meme: meme,
         judgeID: players[judgeInd].id
       };
 
       judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
 
-      io.emit('start round', round)
+      io.emit('start round', round);
+
+      countdown = 30;
+
+      setInterval(function() {
+        io.emit('timer', {countdown: countdown});
+        countdown--;
+
+        if(countdown === 0){
+          clearInterval(this);
+        }
+
+      }, 1000)
 
 
     });

@@ -63,10 +63,18 @@ $(document).ready(function() {
     }else{
 
       // Players Mode
-      
 
     }
 
+    // socket.on('timer', function (data) {
+    //   $('#counter').html(data.countdown);
+    // });
+
+  });
+
+  socket.on('timer', function (data) {
+    $('#time').html("Time Remaining: " + data.countdown);
+    
   });
 
 });
