@@ -9,7 +9,6 @@ router.get('/one', function(req, res, next) {
   db.Meme.findAll({
     attributes: ["id"]
   }).then(function(data) {
-    // console.log(data.length);
     var randomId = randomMemeId(data.length);
 
     db.Meme.findAll({
@@ -17,7 +16,6 @@ router.get('/one', function(req, res, next) {
         id: randomId
       }
     }).then(function(meme) {
-      // console.log(meme);
       res.json(meme);
     });
   });
@@ -29,8 +27,9 @@ router.get('/all', function(req, res, next) {
 
   });
 });
+
 var randomMemeId = function(count) {
   return Math.floor(Math.random() * count) + 1
-}
+};
 
 module.exports = router;

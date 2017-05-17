@@ -1,5 +1,5 @@
 // Chat message implementation here.
-module.exports = function(socket, db){
+module.exports = function(socket, db, io){
     socket.on('chat message', function(msg){
 
       db.User.findOne({
