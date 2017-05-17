@@ -25,8 +25,4 @@ router.get('/all', function(req, res, next) {
   });
 });
 
-var randomMemeId = function(count) {
-  return Math.floor(Math.random() * count) + 1
-};
-
 module.exports = router;

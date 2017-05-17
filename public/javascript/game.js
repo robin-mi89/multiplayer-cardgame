@@ -9,8 +9,13 @@ $(document).ready(function() {
 
     // TODO: DEBUGGING FOR NOW
     //{ user_name: 'Misha Metrikin',email: 'metrikin@gmail.com',wins: 0 }
-    console.log("Yep! MAde it here");
+
     socket.emit('player join', self);
+
+    socket.on("userID", function(userID) {
+      self.id = userID;
+      console.log('User is: ', self)
+    });
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
@@ -45,18 +50,9 @@ $(document).ready(function() {
 
   });
 
-  socket.on('start round', function(meme) {
+  socket.on('start round', function(round) {
     // Change MEME to the one emitted...
-    $('.topic-image').attr("src", meme.url);
+    $('.topic-image').attr("src", round.meme.url);
   });
-
-
-  var randomMemeImage = function() {
-    $.get("/memes/one", function(data) {
-
-      $('.topic-image').attr("src", data.url);
-    });
-  };
-  randomMemeImage();
 
 });
