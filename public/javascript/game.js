@@ -73,8 +73,10 @@ $(document).ready(function() {
   });
 
   socket.on('timer', function (data) {
+
+    // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
-    
+
   });
 
 });
