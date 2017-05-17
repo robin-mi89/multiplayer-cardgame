@@ -24,4 +24,5 @@ function ensureAuthenticated(req, res, next) {
         res.redirect('/auth/google')
     }
 }
+
 module.exports = router;

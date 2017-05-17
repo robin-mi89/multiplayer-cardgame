@@ -4,6 +4,7 @@ $(document).ready(function() {
   var self = {};
 
   $.get('/api/user', function(user){
+
     self = user;
 
     socket.emit('player join', self);
@@ -26,9 +27,9 @@ $(document).ready(function() {
 
     });
 
-    socket.on('chat message', function(messsage) {
+    socket.on('chat message', function(message) {
 
-      var msg = "<p class='chat-p'>" + messsage.name + ': ' + messsage.text + "</p>";
+      var msg = "<p class='chat-p'>" + message.name + ': ' + message.text + "</p>";
       var $chatDsp = $(".chat-display");
 
       $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
@@ -41,12 +42,18 @@ $(document).ready(function() {
 
   });
 
+  socket.on('start round', function(meme) {
+    // Change MEME to the one emitted...
+    $('.topic-image').attr("src", meme.url);
+  });
+
 
   var randomMemeImage = function() {
     $.get("/memes/one", function(data) {
 
-      $('.topic-image').attr("src", data[0].url);
+      $('.topic-image').attr("src", data.url);
     });
   };
   randomMemeImage();
+
 });
