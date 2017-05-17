@@ -17,9 +17,13 @@ router.get('/auth/google/callback',
 
 router.get('/api/user', function(req, res)
 {
-    console.log(req.session);
-    console.log(req.user);
-    res.json(req.user);
+    // TODO: DEBUGGING THIS
+    //res.json(req.user);
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+    res.json({ user_name: 'Misha' + String(Math.floor(Math.random() * 100)),
+      email: 'metrikin@gmail.com',wins: 0 })
+    ///////////////////////////////////////////////////////////////////////////////////////
 });
 
 router.get('/logout', function(req, res) 

@@ -1,8 +1,5 @@
 // Chat message implementation here.
-module.exports = function(io, db){
-  io.on('connection', function(socket){
-    // User connect event logic here
-
+module.exports = function(socket, db){
     socket.on('chat message', function(msg){
 
       db.User.findOne({
@@ -21,8 +18,7 @@ module.exports = function(io, db){
     });
 
     socket.on('disconnect', function(){
-      console.log('user disconnected');
+      console.log('User disconnected, BOO!');
     });
 
-  });
 };

@@ -1,14 +1,16 @@
-module.exports = function(io, db){
-  io.on('connection', function(socket){
+module.exports = function(socket, db){
 
-    var players = [];
+  var players = [];
 
-    socket.on('player_join', function(user) {
+  console.log("User connected YAY!");
 
-      players.push(user);
-      console.log("Current players are", players);
+  socket.on('player join', function(user) {
 
-    })
+    console.log('Player connected' + String(user));
+    players.push(user);
+    console.log("Current players are", players);
+
+  });
 
     // User connect event logic here
 
@@ -20,5 +22,4 @@ module.exports = function(io, db){
     //   console.log('user disconnected');
     // });
 
-  });
 };

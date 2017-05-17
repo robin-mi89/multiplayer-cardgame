@@ -1,4 +1,21 @@
 module.exports = function(io, db) {
-  require('./chat')(io, db);
-  require('./users')(io, db);
+
+  var players = [];
+
+  io.on('connection', function(socket){
+    require('./chat')(socket, db);
+    require('./users')(socket, db);
+
+    console.log("User connected YAY!");
+
+    socket.on('player join', function(user) {
+
+      console.log('Player connected' + String(user));
+      players.push(user);
+      console.log("Current players are", players);
+
+    });
+
+  });
+
 };

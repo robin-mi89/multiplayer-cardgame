@@ -6,7 +6,10 @@ $(document).ready(function() {
   $.get('/api/user', function(user){
     self = user;
 
-    socket.emit('player_join', user);
+    // TODO: DEBUGGING FOR NOW
+    //{ user_name: 'Misha Metrikin',email: 'metrikin@gmail.com',wins: 0 }
+    console.log("Yep! MAde it here");
+    socket.emit('player join', self);
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
