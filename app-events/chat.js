@@ -1,9 +1,22 @@
 // Chat message implementation here.
-module.exports = function(io){
+module.exports = function(io, db){
   io.on('connection', function(socket){
     // User connect event logic here
 
     socket.on('chat message', function(msg){
+
+      db.User.findOne({
+        where: {
+          user_name: msg.name
+        }
+      }).then(function(user) {
+        db.Message.create({
+          message: msg.text,
+          user_name: msg.name,
+          UserId: user.id
+        });
+      });
+
       io.emit('chat message', msg);
     });
 

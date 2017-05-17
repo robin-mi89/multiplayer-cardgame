@@ -24,7 +24,7 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 
 // Here we launch socket io backend-events (app-events/index.js)
-require('../app-events/')(io);
+require('../app-events/')(io, db);
 
 /**
  * Listen on provided port, on all network interfaces.

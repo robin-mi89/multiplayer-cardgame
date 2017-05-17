@@ -1,35 +1,48 @@
 $(document).ready(function() {
-  console.log(user._id);
-  console.log(user.local.email);
 
   var socket = io();
+  var self = {};
 
-  $('#message-submit').on('click', function(e) {
-    e.preventDefault();
-    var messageInput = $('#message-input').val().trim();
+  $.get('/api/user', function(resp){
+    self = resp;
+    // Example: {user_name: "Misha Metrikin", email: "misha.metrikin@gmail.com", wins: 0}
 
-    if (messageInput !== '') {
-      console.log(messageInput);
+    $('#message-submit').on('click', function(e) {
+      e.preventDefault();
+      var messageInput = $('#message-input').val().trim();
 
-      socket.emit('chat message', messageInput);
-      $('#message-input').val('')
-    }
+      if (messageInput !== '') {
+        console.log(messageInput);
+
+        var message = {
+          name: self.user_name,
+          text: messageInput
+        };
+
+        socket.emit('chat message', message);
+        $('#message-input').val('')
+      }
+
+    });
+
+    socket.on('chat message', function(messsage) {
+
+      var msg = "<p class='chat-p'>" + messsage.name + ': ' + messsage.text + "</p>";
+      var $chatDsp = $(".chat-display");
+
+      $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
+      $chatDsp.append(msg);
+      $chatDsp.animate({
+        scrollTop: $chatDsp[0].scrollHeight
+      }, "slow");
+
+    });
+
+
 
   });
 
-  socket.on('chat message', function(messsage) {
 
-    // TODO: MESSSAGES WILL HAVE USER INFO APPENDED
-    var msg = "<p class='chat-p'>" + messsage + "</p>";
-    var $chatDsp = $(".chat-display");
-
-    $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
-    $chatDsp.append(msg);
-    $chatDsp.animate({
-      scrollTop: $chatDsp[0].scrollHeight
-    }, "slow");
-
-  });
   var randomMemeImage = function() {
     $.get("/memes/one", function(data) {
 
