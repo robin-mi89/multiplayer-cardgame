@@ -20,7 +20,7 @@ router.get('/api/user', function(req, res)
     console.log(req.session);
     console.log(req.user);
     res.json(req.user);
-})
+});
 
 router.get('/logout', function(req, res) 
 {

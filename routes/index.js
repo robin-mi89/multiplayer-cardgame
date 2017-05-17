@@ -1,23 +1,20 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-require('../config/passport')(passport); 
-
-/* GET START home page. */
-
+require('../config/passport')(passport);
 
 router.get('/', ensureAuthenticated, function(req, res)
 {
   if(req.user)
   {
     console.log(req.user);
-    res.render('index', 
-  { 
+    res.render('index',
+  {
     title: 'Memeski',
-    user: user 
+    user: user
   });
   }
-})
+});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated())

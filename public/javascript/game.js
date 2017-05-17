@@ -3,9 +3,10 @@ $(document).ready(function() {
   var socket = io();
   var self = {};
 
-  $.get('/api/user', function(resp){
-    self = resp;
-    // Example: {user_name: "Misha Metrikin", email: "misha.metrikin@gmail.com", wins: 0}
+  $.get('/api/user', function(user){
+    self = user;
+
+    socket.emit('player_join', user);
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
@@ -37,8 +38,6 @@ $(document).ready(function() {
       }, "slow");
 
     });
-
-
 
   });
 
