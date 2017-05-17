@@ -51,8 +51,22 @@ $(document).ready(function() {
   });
 
   socket.on('start round', function(round) {
+
     // Change MEME to the one emitted...
     $('.topic-image').attr("src", round.meme.url);
+
+    if(self.id === round.judgeID){
+      console.log("You are the judge now!")
+
+      // Judge mode
+
+    }else{
+
+      // Players Mode
+      
+
+    }
+
   });
 
 });
