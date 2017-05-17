@@ -4,7 +4,6 @@ module.exports = function(io, db) {
 
   io.on('connection', function(socket){
     require('./chat')(socket, db);
-    require('./users')(socket, db);
 
     console.log("User connected YAY!");
 
