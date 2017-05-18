@@ -1,39 +1,30 @@
 $(document).ready(function() {
 
   var socket = io(),
-    self = {};
+      self = {};
 
   $.get('/api/user', function(user) {
     self = user;
-
-    // TODO: DEBUGGING FOR NOW
-    //{ user_name: 'Misha Metrikin',email: 'metrikin@gmail.com',wins: 0 }
-
-    // TODO:(Victor \\ Misha \\ Robin) Arrange the "Scores " panel here..
-
     socket.emit('player join', self);
 
     socket.on("userID", function(user) {
       self.id = user.uid;
 
-      console.log(user.order);
-
     });
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
+
       var messageInput = $('#message-input').val().trim();
 
       if (messageInput !== '') {
-        console.log(messageInput);
-
         var message = {
           name: self.user_name,
           text: messageInput
         };
-
         socket.emit('chat message', message);
         $('#message-input').val('')
+
       }
 
     });
@@ -75,7 +66,6 @@ $(document).ready(function() {
   });
 
   socket.on('timer', function(data) {
-
     // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
 
