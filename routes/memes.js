@@ -6,7 +6,9 @@ var db = require('../models');
 var router = express.Router();
 var Sequelize = require('sequelize');
 
-router.get('/one', function(req, res, next) {
+// BasePath = /meme
+
+router.get('/one', function(req, res) {
 
   db.Meme.findOne({
     order: [
@@ -18,11 +20,17 @@ router.get('/one', function(req, res, next) {
 
 });
 
-router.get('/all', function(req, res, next) {
+router.get('/all', function(req, res) {
   db.Meme.findAll({}).then(function(data) {
     res.json(data);
 
   });
+});
+
+router.post('/new', function(req, res) {
+  // Logic to save the meme here?
+
+
 });
 
 module.exports = router;

@@ -4,7 +4,10 @@
 var randomMemeImage = function() {
   $.get("/memes/one", function(data) {
 
-    $('.topic-image').attr("src", data.url);
+    $('.topic-image').attr({
+      src: data.url,
+      id: data.id
+    });
   });
 };
 randomMemeImage();

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-  var socket = io();
-  var self = {};
+  var socket = io(),
+      self = {};
 
   $.get('/api/user', function(user){
 
@@ -55,7 +55,12 @@ $(document).ready(function() {
   socket.on('start round', function(round) {
 
     // Change MEME to the one emitted...
-    $('.topic-image').attr("src", round.meme.url);
+
+
+    $('.topic-image').attr({
+      src: round.meme.url,
+      id: round.meme.id
+    });
 
     if(self.id === round.judgeID){
       console.log("You are the judge now!")
@@ -68,10 +73,6 @@ $(document).ready(function() {
 
     }
 
-    // socket.on('timer', function (data) {
-    //   $('#counter').html(data.countdown);
-    // });
-
   });
 
   socket.on('timer', function (data) {
@@ -80,5 +81,21 @@ $(document).ready(function() {
     $('#time').html("Time Remaining: " + data.countdown);
 
   });
+
+  $('#meme-submit').on('click', function() {
+
+    var memeText = {
+      top: $('top-text').val().trim() || '',
+      bottom: $('bottom-text').val().trim() || ''
+    };
+
+    $.post('/meme/new', memeText ,function(err, resp){
+      if(err) throw new Error('Could not post your meme', err);
+
+
+
+    })
+
+  })
 
 });

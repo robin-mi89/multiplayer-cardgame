@@ -2,10 +2,11 @@ Sequelize = require('sequelize');
 
 module.exports = function(io, db) {
 
-  var players   = [];
-  var judgeInd  = 0;
-  var countdown = 30;
-  var round     = {};
+  var players   = [],
+      judgeInd  = 0,
+      countdown = 30,
+      round     = {};
+      pTotal    = 4;
 
   io.on('connection', function(socket){
     require('./chat')(socket, db);
@@ -17,7 +18,9 @@ module.exports = function(io, db) {
       user.id = socket.id;
       user.socket = socket;
 
-      players.push(user);
+      if(players.length < pTotal){
+        players.push(user);
+      }
 
       user.socket.emit("userID", user.id);
 
