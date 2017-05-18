@@ -12,7 +12,14 @@ module.exports = function(sequelize, DataTypes){
         len: [1]
       },
       allowNull: false
-    }
+    },
+    imgFlipID: {
+      type: DataTypes.STRING,
+      validate: {
+        len: [2]
+      },
+      allowNull: false
+  }
   },{
     timestamps: false
   });
