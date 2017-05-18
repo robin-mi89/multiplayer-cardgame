@@ -16,3 +16,10 @@ A Multi-Player Card Game
 1. Run `npm start` to build initial DB
 1. Use Sequilize CLI to run `sequelize db:seed:all`
 1. Consider improving this workflow as it is in development!
+
+
+#### TODO (For Deployment):
+
+1. Set Environmental Variables
+    -  process.env.IMGF_USERNAME
+    -  process.env.IMGF_PASSWRD

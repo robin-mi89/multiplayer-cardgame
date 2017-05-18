@@ -5,8 +5,9 @@ var randomMemeImage = function() {
   $.get("/memes/one", function(data) {
 
     $('.topic-image').attr({
-      src: data.url,
-      id: data.id
+      "src": data.url,
+      "id": data.id,
+      "data-external": data.imgFlipID
     });
   });
 };

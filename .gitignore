@@ -37,3 +37,7 @@ npm-debug.log
 
 # Google secrets
 secrets.js
+
+# ImgFlip Api Config
+meme_config.js
+

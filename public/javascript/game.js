@@ -50,12 +50,10 @@ $(document).ready(function() {
 
   socket.on('start round', function(round) {
 
-    // Change MEME to the one emitted...
-
-
     $('.topic-image').attr({
-      src: round.meme.url,
-      id: round.meme.id
+      "src": round.meme.url,
+      "id": round.meme.id,
+      "data-external": round.meme.imgFlipID
     });
 
     if (self.id === round.judgeID) {
@@ -90,14 +88,15 @@ $(document).ready(function() {
   $('#meme-submit').on('click', function() {
 
     var memeText = {
+      memeId: $('.topic-image').attr("data-external"),
       top: $('#top-text').val().trim() || '',
       bottom: $('#bottom-text').val().trim() || ''
     };
 
-    $.post('/memes/new', memeText, function(err, resp) {
-      if (err) throw new Error('Could not post your meme', err);
+    // Generates a meme with get request to route
+    $.post('/memes/create', memeText, function(resp) {
 
-
+      //console.log("Response from meme gen is:", resp);
 
     })
 
