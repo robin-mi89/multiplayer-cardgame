@@ -76,13 +76,13 @@ module.exports = function(io, db) {
       countdown = 30;
 
       setInterval(function() {
-        io.emit('timer', {countdown: countdown});
-        countdown--;
 
-        if(countdown === 0){
+        if(countdown < 1){
           clearInterval(this);
         }
 
+        io.emit('timer', {countdown: countdown});
+        countdown--;
       }, 1000)
 
 
