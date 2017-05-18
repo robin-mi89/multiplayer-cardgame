@@ -90,11 +90,11 @@ $(document).ready(function() {
   $('#meme-submit').on('click', function() {
 
     var memeText = {
-      top: $('top-text').val().trim() || '',
-      bottom: $('bottom-text').val().trim() || ''
+      top: $('#top-text').val().trim() || '',
+      bottom: $('#bottom-text').val().trim() || ''
     };
 
-    $.post('/meme/new', memeText, function(err, resp) {
+    $.post('/memes/new', memeText, function(err, resp) {
       if (err) throw new Error('Could not post your meme', err);
 
 
