@@ -9,7 +9,7 @@ module.exports = function(io, db) {
       pTotal    = 4;
 
   io.on('connection', function(socket){
-    require('./chat')(socket, db);
+    require('./chat')(socket, db, io);
 
     console.log("Socket is: ",socket.id);
 
@@ -22,7 +22,7 @@ module.exports = function(io, db) {
         players.push(user);
       }
 
-      user.socket.emit("userID", user.id);
+      user.socket.emit("userID", {uid: user.id, order: players.length});
 
       // DEBUGGING TODO: (REMOVE) /////////////////////////////////////////////
       players.forEach(function(player) {

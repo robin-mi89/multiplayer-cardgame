@@ -4,7 +4,6 @@ $(document).ready(function() {
       self = {};
 
   $.get('/api/user', function(user){
-
     self = user;
 
     // TODO: DEBUGGING FOR NOW
@@ -14,9 +13,11 @@ $(document).ready(function() {
 
     socket.emit('player join', self);
 
-    socket.on("userID", function(userID) {
-      self.id = userID;
-      console.log('User is: ', self)
+    socket.on("userID", function(user) {
+      self.id = user.uid;
+
+      console.log(user.order);
+
     });
 
     $('#message-submit').on('click', function(e) {
