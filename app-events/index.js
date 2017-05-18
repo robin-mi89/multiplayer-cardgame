@@ -20,9 +20,16 @@ module.exports = function(io, db) {
 
       if(players.length < pTotal){
         players.push(user);
+
+        var active = players.map(function(each, i) {
+          return {uid: each.id, name: each.user_name, order: i};
+        });
+
+        io.emit('player added', active);
       }
 
       user.socket.emit("userID", {uid: user.id, order: players.length});
+
 
       // DEBUGGING TODO: (REMOVE) /////////////////////////////////////////////
       players.forEach(function(player) {
@@ -36,7 +43,6 @@ module.exports = function(io, db) {
       }
 
     });
-
 
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.
 

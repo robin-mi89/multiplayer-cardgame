@@ -7,7 +7,6 @@ var router = express.Router();
 var Sequelize = require('sequelize');
 
 // BasePath = /meme
-
 router.get('/one', function(req, res) {
 
   db.Meme.findOne({

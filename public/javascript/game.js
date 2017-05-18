@@ -83,6 +83,11 @@ $(document).ready(function() {
 
   });
 
+  // TODO: (Victor Tsang) Implement score using this event
+  socket.on('player added', function(players) {
+    console.log('Players array is at: ', players);
+  });
+
   $('#meme-submit').on('click', function() {
 
     var memeText = {
