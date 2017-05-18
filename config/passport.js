@@ -37,9 +37,9 @@ module.exports = function(passport) {
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
-        clientID        : secrets.secrets.CLIENT_ID,
-        clientSecret    : secrets.secrets.CLIENT_SECRET,
-        callbackURL     : secrets.secrets.CALLBACK_URL,
+        clientID        : process.env.google_client_id || secrets.secrets.CLIENT_ID,
+        clientSecret    : process.env.google_client_secret || secrets.secrets.CLIENT_SECRET,
+        callbackURL     : process.env.callback_url || secrets.secrets.CALLBACK_URL,
         passReqToCallback : true
 
     },
