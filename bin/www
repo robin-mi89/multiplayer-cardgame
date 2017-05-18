@@ -93,7 +93,7 @@ process.on('uncaughtException', function(err) {
     console.log("===================================")
   }
   console.log(err);
-})
+});
 
 /**
  * Event listener for HTTP server "listening" event.

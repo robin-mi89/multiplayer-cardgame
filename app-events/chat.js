@@ -18,7 +18,8 @@ module.exports = function(socket, db, io){
     });
 
     socket.on('disconnect', function(){
-      console.log('User disconnected, BOO!');
+      // Chat disconnect probably not important?
+
     });
 
 };

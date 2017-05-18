@@ -1,13 +1,19 @@
 $(document).ready(function() {
 
-  var socket = io();
-  var self = {};
+  var socket = io(),
+      self = {};
 
   $.get('/api/user', function(user){
-
     self = user;
 
     socket.emit('player join', self);
+
+    socket.on("userID", function(user) {
+      self.id = user.uid;
+
+      console.log(user.order);
+
+    });
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
@@ -42,18 +48,55 @@ $(document).ready(function() {
 
   });
 
-  socket.on('start round', function(meme) {
+  socket.on('start round', function(round) {
+
     // Change MEME to the one emitted...
-    $('.topic-image').attr("src", meme.url);
+
+
+    $('.topic-image').attr({
+      src: round.meme.url,
+      id: round.meme.id
+    });
+
+    if(self.id === round.judgeID){
+      console.log("You are the judge now!")
+
+      // Judge mode
+
+    }else{
+
+      // Players Mode
+
+    }
+
   });
 
+  socket.on('timer', function (data) {
 
-  var randomMemeImage = function() {
-    $.get("/memes/one", function(data) {
+    // TODO:(Victor Tsang) Improve UI of timer here..
+    $('#time').html("Time Remaining: " + data.countdown);
 
-      $('.topic-image').attr("src", data.url);
-    });
-  };
-  randomMemeImage();
+  });
+
+  // TODO: (Victor Tsang) Implement score using this event
+  socket.on('player added', function(players) {
+    console.log('Players array is at: ', players);
+  });
+
+  $('#meme-submit').on('click', function() {
+
+    var memeText = {
+      top: $('top-text').val().trim() || '',
+      bottom: $('bottom-text').val().trim() || ''
+    };
+
+    $.post('/meme/new', memeText ,function(err, resp){
+      if(err) throw new Error('Could not post your meme', err);
+
+
+
+    })
+
+  })
 
 });
