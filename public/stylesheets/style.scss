@@ -9,10 +9,27 @@ html {
   overflow: hidden;
 }
 
+
+.modal-title{
+  text-align: center !important;
+  width:100%;
+}
+
+.modal-body{
+  align-self:center;
+}
+
 .shadow {
   -webkit-box-shadow: 5px 5px 5px 0 rgba(67, 67, 69, 0.5);
   -moz-box-shadow: 5px 5px 5px 0 rgba(67, 67, 69, 0.5);
   box-shadow: 5px 5px 5px 0 rgba(67, 67, 69, 0.5);
+}
+
+
+
+.underline{
+  padding-bottom:5px;
+  border-bottom:1px solid #ccc;
 }
 
 .sub-text {
@@ -26,10 +43,15 @@ html {
 .timer {
   margin-top: 15px;
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
   background-color: white;
+}
+#time{
+  font-size:22px;
+  padding:0;
+  margin:0;
 }
 
 #top-text {
@@ -103,8 +125,8 @@ main {
   display: flex;
   margin-top: 15px;
   flex-direction: column;
-  flex: 0 0 25%;
-  max-width: 25%;
+  flex: 0 0 20%;
+  max-width: 20%;
   padding: 0.40rem;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
@@ -112,7 +134,14 @@ main {
 
   &-display {
     flex: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
+  padding-bottom:10px;
+  }
+
+  &-p{
+    font-size:14px;
+    word-wrap: break-word;
+    margin-bottom:2px;
   }
 
   &-input {
@@ -136,7 +165,7 @@ main {
 
   &-image {
     max-width: 100%;
-    max-height:315px;
+    max-height:380px;
   }
 }
 
@@ -188,12 +217,15 @@ main {
     &-img {
       max-width: 100%;
       max-height: 250px;
+
+
     }
 
     &-chosen {
       background-color: $select-color;
       border: 1px solid $select-color;
       max-width: 100%;
+
     }
   }
 }

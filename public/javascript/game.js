@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
   var socket = io(),
-      self = {};
+    self = {};
 
-  $.get('/api/user', function(user){
+  $.get('/api/user', function(user) {
     self = user;
 
     socket.emit('player join', self);
@@ -58,12 +58,12 @@ $(document).ready(function() {
       id: round.meme.id
     });
 
-    if(self.id === round.judgeID){
+    if (self.id === round.judgeID) {
       console.log("You are the judge now!")
 
       // Judge mode
 
-    }else{
+    } else {
 
       // Players Mode
 
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
   });
 
-  socket.on('timer', function (data) {
+  socket.on('timer', function(data) {
 
     // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
@@ -81,6 +81,10 @@ $(document).ready(function() {
   // TODO: (Victor Tsang) Implement score using this event
   socket.on('player added', function(players) {
     console.log('Players array is at: ', players);
+    $(".players").empty();
+    players.forEach(function(item, index) {
+      $(".players").append("<h6>" + item.name + "</h6>");
+    });
   });
 
   $('#meme-submit').on('click', function() {
@@ -90,8 +94,8 @@ $(document).ready(function() {
       bottom: $('bottom-text').val().trim() || ''
     };
 
-    $.post('/meme/new', memeText ,function(err, resp){
-      if(err) throw new Error('Could not post your meme', err);
+    $.post('/meme/new', memeText, function(err, resp) {
+      if (err) throw new Error('Could not post your meme', err);
 
 
 

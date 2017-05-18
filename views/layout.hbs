@@ -3,7 +3,7 @@
 
 <head>
   <title>{{title}}</title>
-
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:600" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel="stylesheet" href="https://cdn.bootcss.com/hover.css/2.1.1/css/hover-min.css">
@@ -20,13 +20,9 @@
         <img class="topic-image topic--spacing topic--border shadow" src="" />
 
         <div id="score-container" class="topic--spacing topic--border shadow">
-          <h4>Scores <br/><span class="sub-text">5pts to Win</span></h4>
+          <h4 class="underline">Scores<span class="sub-text"> (5pts to Win)</span></h4>
 
-          <hr/>
-          <h5 class="chosen">Player 1: 0 </h5>
-          <h5>Player 2: 0 </h5>
-          <h5>Player 3: 0 </h5>
-          <h5>Player 4: 0 </h5>
+          <div class="players"></div>
         </div>
 
       </section>
@@ -95,13 +91,38 @@
 
     </main>
 
+    <div id="best-meme" class="modal fade">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+          <div class="modal-header">
+            <h4 class="modal-title">Winner: Player 1 !!!!</h4>
+
+          </div>
+
+          <div class="modal-body">
+            <img class="choice-card-inner-border" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+            <!-- <div class="choice-card shadow max-width">
+              <div class="choice-card-inner-border">
+                <img class="choice-card-img max-width" src="http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg" />
+              </div>
+            </div> -->
+          </div>
+
+
+        </div>
+      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <!--Supposedly SocketIO is automatically exposed to front end-->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/javascript/page_init.js"></script>
-    <!--Temporary until code is consolidated (Multi-module)-->
-    <script src="/javascript/game.js"></script>
+
+  </div>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!--Supposedly SocketIO is automatically exposed to front end-->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <!--Temporary until code is consolidated (Multi-module)-->
+  <script src="/javascript/game.js"></script>
+  <script src="/javascript/page_init.js"></script>
 </body>
 
 </html>
