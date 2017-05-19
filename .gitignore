@@ -41,3 +41,6 @@ secrets.js
 # ImgFlip Api Config
 meme_config.js
 
+# VScode debug configurations
+.vscode
+

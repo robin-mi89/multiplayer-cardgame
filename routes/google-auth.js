@@ -17,6 +17,7 @@ router.get('/auth/google/callback',
 
 router.get('/api/user', function(req, res)
 {
+    console.log(req.user);
     res.json(req.user);
 });
 // {
