@@ -8,7 +8,8 @@ module.exports = function(io, db) {
       round     = {},
       pTotal    = 4,
       playrRef  = {},
-      roundSubs = 0;
+      roundSubs = 0,
+      actJudge  = undefined;
 
   io.on('connection', function(socket){
     require('./chat')(socket, db, io);
@@ -94,6 +95,8 @@ module.exports = function(io, db) {
         meme: meme,
         judgeID: players[judgeInd].id
       };
+
+      actJudge = players[judgeInd];
 
       judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
 
