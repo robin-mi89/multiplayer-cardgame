@@ -54,7 +54,7 @@ module.exports = function(io, db) {
         roundSubs++;
         io.emit('generate card', sub);
 
-        if(roundSubs >= 4){
+        if(roundSubs === 4){
           // All four things submitted
           socket.emit('judgment round')
 
@@ -62,6 +62,10 @@ module.exports = function(io, db) {
 
       }
 
+    });
+
+    socket.on('judge hovering', function(id) {
+      socket.broadcast.emit('judge looking', id)
     });
 
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.

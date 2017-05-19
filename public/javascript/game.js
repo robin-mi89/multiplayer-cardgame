@@ -3,7 +3,8 @@ $(document).ready(function() {
   var socket    = io(),
       self      = {},
       submitted = false,
-      roundSubs = 0;
+      roundSubs = 0,
+      judgeMode = false;
 
   $.get('/api/user', function(user) {
     self = user;
@@ -58,12 +59,14 @@ $(document).ready(function() {
     });
 
     if (self.id === round.judgeID) {
-
       // Judge mode
+      console.log("You the judge");
+      judgeMode = true; // See!? I told you -- Judge Mode
+
 
     } else {
-
       // Players Mode
+      judgeMode = false;
 
     }
 
@@ -73,7 +76,6 @@ $(document).ready(function() {
     $(".timer").hide();
     $("#player-cards").hide();
     $("#choice-card-container").show();
-
 
   });
 
@@ -90,6 +92,20 @@ $(document).ready(function() {
       $(".players").append("<h6>" + item.name + "</h6>");
     });
   });
+
+
+  $(".choice-card-img").hover(function() {
+    if(judgeMode){
+      socket.emit('judge hovering', $(this).attr('id'))
+    }
+  });
+
+  socket.on('judge looking', function(imgId) {
+    var tag = '#' + imgId;
+    $(tag).closest(".choice-card").toggleClass('judge-hover')
+
+  });
+
 
   $('#meme-submit').on('click', function() {
 
@@ -124,15 +140,17 @@ $(document).ready(function() {
 
     $(choiceCards[card.round]).attr({
       "src": card.meme,
-      "data-player": card.id
-    }).closest('.choice-card').show();
+      "data-id": card.user
+    }).load(function() {
+      $(this).closest('.choice-card').show();
+    })
 
   }
 
-  function SendSubmission(self) {
+  function SendSubmission(user) {
     submission = {
-      user: self.id,
-      meme: self.meme ||
+      user: user.id,
+      meme: user.meme ||
       'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
       //TODO: What should be the default if nothing submitted?
     };
