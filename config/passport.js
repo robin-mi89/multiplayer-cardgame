@@ -28,7 +28,7 @@ module.exports = function(passport) {
                 {
                     var temp = dbUser[0].dataValues;
                     
-                    var user = {user_name: temp.user_name, email: temp.email, wins: temp.wins}
+                    var user = {user_name: temp.user_name, email: temp.email, wins: temp.wins, photo: temp.photo}
                     done(null, user);
                 });
     });
@@ -37,9 +37,9 @@ module.exports = function(passport) {
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
-        clientID        : secrets.secrets.CLIENT_ID,
-        clientSecret    : secrets.secrets.CLIENT_SECRET,
-        callbackURL     : secrets.secrets.CALLBACK_URL,
+        clientID        : process.env.google_client_id || secrets.secrets.CLIENT_ID,
+        clientSecret    : process.env.google_client_secret || secrets.secrets.CLIENT_SECRET,
+        callbackURL     : process.env.callback_url || secrets.secrets.CALLBACK_URL,
         passReqToCallback : true
 
     },
@@ -74,7 +74,8 @@ module.exports = function(passport) {
                         googleID : profile.id,
                         token : token,
                         user_name : profile.displayName,
-                        email : profile.emails[0].value // pull the first email
+                        email : profile.emails[0].value, // pull the first email
+                        photo: profile.photos[0].value
                         }).then(function(dbUser)
                         {
                             return done(null, dbUser);

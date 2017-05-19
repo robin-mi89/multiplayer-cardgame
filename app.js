@@ -11,7 +11,6 @@ var flash = require('connect-flash');
 
 // Add routes here
 var index = require('./routes/index');
-var users = require('./routes/users');
 var memes = require('./routes/memes');
 var googleAuth = require('./routes/google-auth');
 
@@ -45,7 +44,6 @@ app.use(passport.session());
 app.use(flash());
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/memes', memes);
 app.use('', googleAuth);
 // catch 404 and forward to error handler

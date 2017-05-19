@@ -23,3 +23,4 @@ A Multi-Player Card Game
 1. Set Environmental Variables
     -  process.env.IMGF_USERNAME
     -  process.env.IMGF_PASSWRD
+1. Make sure that process.env.google_client_id, process.env.google_client_secret, & process.env.callback_url environmental variables are correctly set up with your google api's client_id, client_secret, and a correct callback_url for the callback for oAuth authorization. 
