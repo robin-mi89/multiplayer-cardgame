@@ -67,15 +67,41 @@ $(document).ready(function() {
     } else {
       // Players Mode
       judgeMode = false;
+      $(".choice-card-img").off('click');
 
     }
 
   });
 
   socket.on('judgment round', function() {
-    $(".timer").hide();
-    $("#player-cards").hide();
-    $("#choice-card-container").show();
+
+    if(judgeMode){
+      $(".choice-card-img").on('click', function() {
+        socket.emit('decision', $(this).attr('data-id'))
+      })
+    }
+  });
+
+  socket.on('announce winner', function(winner) {
+    // Ex. winner = {name: "Misha Metrikin, card_id: LbmAelhUb2mDN072AAAF}
+    var card = "#" + winner.card_id;
+
+    // Still needs work
+    $(".choice-card").on('click', card, function() {
+      // Set stuff in the winner modal
+      $('#winner-modal-title').text("Winner: " + winner.name);
+      $('#winner-modal-meme').attr('src', $(card).attr('src'))
+      .load(function() {
+        $('#best-meme').modal('show');
+        setTimeout(function() {
+          $('#best-meme').modal('hide');
+          //start next round here
+        }, 3000);
+
+      });
+
+
+    });
 
   });
 
@@ -127,6 +153,9 @@ $(document).ready(function() {
     if(!submitted){
       SendSubmission(self);
     }
+    $(".timer").hide();
+    $("#player-cards").hide();
+    $("#choice-card-container").show();
     self.meme = undefined;
 
   });

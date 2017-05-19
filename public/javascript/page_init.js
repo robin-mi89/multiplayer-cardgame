@@ -13,22 +13,23 @@ var randomMemeImage = function() {
 };
 randomMemeImage();
 
-// host selects a meme card
-$(".choice-card").click(function() {
+// TODO:(Mikhail Metrikin) : Will use this later
+// // host selects a meme card
+// $(".choice-card").click(function() {
+//
+//   //need to check if host is the one that clicked the choice-card
+//   // need to wrap this in a then function
+//   $('#best-meme').modal('show');
+//
+//   setTimeout(function() {
+//     $('#best-meme').modal('hide');
+//     //start next round here
+//   }, 3000);
+//
+// });
 
-  //need to check if host is the one that clicked the choice-card
-  // need to wrap this in a then function
-  $('#best-meme').modal('show');
 
-  setTimeout(function() {
-    $('#best-meme').modal('hide');
-    //start next round here
-  }, 3000);
-
-});
-
-
-// host selects a meme card
+// Host selects a meme card
 $("#meme-submit").click(function() {
   $(".timer").hide();
   $("#player-cards").hide();

@@ -56,10 +56,8 @@ module.exports = function(io, db) {
 
         if(roundSubs === 4){
           // All four things submitted
-          socket.emit('judgment round')
-
+          io.emit('judgment round')
         }
-
       }
 
     });
@@ -68,8 +66,16 @@ module.exports = function(io, db) {
       socket.broadcast.emit('judge looking', id)
     });
 
-    // TODO: NEEDS DEBUGGING, -- see Mikhail M.
+    socket.on('decision', function(winID) {
+      var winner = playrRef[winID];
+      io.emit('announce winner', {
+        name: winner.user_name,
+        card_id: winner.id
+      });
 
+    })
+
+    // TODO: NEEDS DEBUGGING, -- see Mikhail M.
     // socket.on('disconnect', function(){
     //
     //   // Rebuild player array without disconnected user
@@ -101,18 +107,15 @@ module.exports = function(io, db) {
       };
 
       actJudge = players[judgeInd];
-
       judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
-
       io.emit('start round', round);
 
       countdown = 30;
 
       setInterval(function() {
         if(countdown < 1){
-          clearInterval(this);
           io.emit('round end');
-
+          clearInterval(this);
         }
 
         io.emit('timer', {countdown: countdown});
