@@ -1,7 +1,9 @@
 $(document).ready(function() {
 
-  var socket = io(),
-    self = {};
+  var socket    = io(),
+      self      = {},
+      submitted = false,
+      roundSubs = 0;
 
   $.get('/api/user', function(user) {
     self = user;
@@ -11,24 +13,21 @@ $(document).ready(function() {
     socket.on("userID", function(user) {
       self.id = user.uid;
 
-      console.log(user.order);
-
     });
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
+
       var messageInput = $('#message-input').val().trim();
 
       if (messageInput !== '') {
-        console.log(messageInput);
-
         var message = {
           name: self.user_name,
           text: messageInput
         };
-
         socket.emit('chat message', message);
         $('#message-input').val('')
+
       }
 
     });
@@ -49,6 +48,8 @@ $(document).ready(function() {
   });
 
   socket.on('start round', function(round) {
+    submitted = false;
+    roundSubs = 0;
 
     $('.topic-image').attr({
       "src": round.meme.url,
@@ -57,7 +58,6 @@ $(document).ready(function() {
     });
 
     if (self.id === round.judgeID) {
-      console.log("You are the judge now!")
 
       // Judge mode
 
@@ -70,7 +70,6 @@ $(document).ready(function() {
   });
 
   socket.on('timer', function(data) {
-
     // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
 
@@ -78,7 +77,6 @@ $(document).ready(function() {
 
   // TODO: (Victor Tsang) Implement score using this event
   socket.on('player added', function(players) {
-    console.log('Players array is at: ', players);
     $(".players").empty();
     players.forEach(function(item, index) {
       $(".players").append("<h6>" + item.name + "</h6>");
@@ -95,11 +93,41 @@ $(document).ready(function() {
 
     // Generates a meme with get request to route
     $.post('/memes/create', memeText, function(resp) {
-
-      //console.log("Response from meme gen is:", resp);
-
+      self.meme = resp;
+      SendSubmission(self);
     })
 
-  })
+  });
+  
+  socket.on('round end', function() {
+    if(!submitted){
+      SendSubmission(self)
+    }
+    self.meme = undefined;
+
+  });
+
+  socket.on('generate card', function(sub) {
+    var choiceCards = document.getElementsByClassName("choice-card-img");
+
+    $(choiceCards[sub.round]).attr({
+      "src": sub.meme,
+      "data-player": sub.id
+    }).closest('.choice-card').show();
+
+
+
+  });
+
+  function SendSubmission(self) {
+    submission = {
+      user: self.id,
+      meme: self.meme ||
+      'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
+      //TODO: What should be the default if nothing submitted?
+    };
+    socket.emit('meme submission', submission);
+    submitted = true;
+  }
 
 });
