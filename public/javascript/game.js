@@ -125,14 +125,16 @@ $(document).ready(function() {
     $(choiceCards[card.round]).attr({
       "src": card.meme,
       "data-player": card.id
-    }).closest('.choice-card').show();
+    }).load(function() {
+      $(this).closest('.choice-card').show();
+    })
 
   }
 
-  function SendSubmission(self) {
+  function SendSubmission(user) {
     submission = {
-      user: self.id,
-      meme: self.meme ||
+      user: user.id,
+      meme: user.meme ||
       'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
       //TODO: What should be the default if nothing submitted?
     };
