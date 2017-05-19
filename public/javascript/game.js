@@ -57,7 +57,6 @@ $(document).ready(function() {
     });
 
     if (self.id === round.judgeID) {
-      console.log("You are the judge now!")
 
       // Judge mode
 
