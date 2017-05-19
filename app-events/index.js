@@ -5,13 +5,13 @@ module.exports = function(io, db) {
   var players   = [],
       judgeInd  = 0,
       countdown = 30,
-      round     = {};
-      pTotal    = 4;
+      round     = {},
+      pTotal    = 4,
+      playrRef  = {},
+      roundSubs = 0;
 
   io.on('connection', function(socket){
     require('./chat')(socket, db, io);
-
-    console.log("Socket is: ",socket.id);
 
     socket.on('player join', function(user) {
 
@@ -30,16 +30,35 @@ module.exports = function(io, db) {
 
       user.socket.emit("userID", {uid: user.id, order: players.length});
 
-
-      // DEBUGGING TODO: (REMOVE) /////////////////////////////////////////////
-      players.forEach(function(player) {
-        console.log("Players joined: ", player.user_name);
-      });
-      /////////////////////////////////////////////////////////////////////////
-
       // When 4 players login Start game
       if(players.length >= 4) {
+
+        // Create object reference for players by their Socket.id
+        playrRef = players.reduce(function(map, user) {
+          map[user.id] = user;
+          return map;
+        }, {});
         StartGame();
+
+      }
+
+    });
+
+    socket.on('meme submission', function(sub) {
+
+      if(playrRef.hasOwnProperty(sub.user)){
+        // Count submission
+
+        sub.round = roundSubs;
+        roundSubs++;
+        io.emit('generate card', sub);
+
+        if(roundSubs >= 4){
+          // All four things submitted
+          socket.emit('judgment round')
+
+        }
+
       }
 
     });
@@ -62,6 +81,7 @@ module.exports = function(io, db) {
 
   });
 
+
   function StartGame(){
 
     db.Meme.find({
@@ -82,19 +102,19 @@ module.exports = function(io, db) {
       countdown = 30;
 
       setInterval(function() {
-
         if(countdown < 1){
           clearInterval(this);
+          io.emit('round end');
+
         }
 
         io.emit('timer', {countdown: countdown});
         countdown--;
       }, 1000)
 
-
     });
-
-
   }
+
+
 
 };
