@@ -69,6 +69,14 @@ $(document).ready(function() {
 
   });
 
+  socket.on('judgment round', function() {
+    $(".timer").hide();
+    $("#player-cards").hide();
+    $("#choice-card-container").show();
+
+
+  });
+
   socket.on('timer', function(data) {
     // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
@@ -101,23 +109,25 @@ $(document).ready(function() {
   
   socket.on('round end', function() {
     if(!submitted){
-      SendSubmission(self)
+      SendSubmission(self);
     }
     self.meme = undefined;
 
   });
 
   socket.on('generate card', function(sub) {
+    generateCard(sub);
+  });
+
+  function generateCard(card) {
     var choiceCards = document.getElementsByClassName("choice-card-img");
 
-    $(choiceCards[sub.round]).attr({
-      "src": sub.meme,
-      "data-player": sub.id
+    $(choiceCards[card.round]).attr({
+      "src": card.meme,
+      "data-player": card.id
     }).closest('.choice-card').show();
 
-
-
-  });
+  }
 
   function SendSubmission(self) {
     submission = {
