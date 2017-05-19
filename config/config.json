@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "arboreal07",
-    "database": "multiplayer_card_db",
+    "password": "",
+    "database": "memeski",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
