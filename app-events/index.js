@@ -104,7 +104,6 @@ module.exports = function(io, db) {
     socket.on('player ready', function() {
       playerReady++;
 
-      console.log("Player ready is at ", playerReady);
 
       if(playerReady === 4 && running === false){
         running = true;
@@ -121,8 +120,6 @@ module.exports = function(io, db) {
             countdown: countdown
           });
 
-
-          console.log(countdown);
           countdown--;
         };
 

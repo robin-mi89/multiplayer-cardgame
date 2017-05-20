@@ -195,7 +195,7 @@ $(document).ready(function() {
       "src": card.meme,
       "data-id": card.user
     }).load(function() {
-      $(this).closest('.choice-card').show();
+      $(this).closest('.choice-card').css('display', 'block');
     })
 
   }
@@ -212,7 +212,7 @@ $(document).ready(function() {
   }
 
   function resetRound() {
-    $(".choice-card").hide();
+    $(".choice-card").css('display', 'none');
     $(".timer").show();
     $("#player-cards").show();
     $(".choice-card-img").attr('src', 'http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg');
