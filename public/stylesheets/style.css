@@ -161,11 +161,11 @@ main {
 
 .topic-image {
   max-width: 100%;
-  max-height: 320px;
+  max-height: 380px;
 }
 
 .player {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   padding: 5px;
 }
 
@@ -173,7 +173,7 @@ main {
   border: 1px solid antiquewhite;
   border-radius: 50%;
   margin-right: 20px;
-  max-height: 30px;
+  max-height: 40px;
 }
 
 .player-judge {
@@ -231,8 +231,8 @@ main {
 }
 
 .choice-card-img {
-  width: 100%;
-  height: 200px;
+  max-width: 100%;
+  max-height: 250px;
 }
 
 .choice-card-chosen {
