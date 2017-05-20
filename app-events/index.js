@@ -96,9 +96,10 @@ module.exports = function(io, db) {
       var winner = playrRef[chosen.playerID];
       io.emit('announce winner', {
         name: winner.user_name,
-        card_id: chosen.cardId
+        card_id: chosen.cardId,
+        uid: chosen.playerID
       });
-
+      
     });
 
     socket.on('player ready', function() {
