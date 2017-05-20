@@ -81,6 +81,10 @@ module.exports = function(io, db) {
       socket.broadcast.emit('judge looking', id)
     });
 
+    socket.on('judge unhovering', function(id) {
+      socket.broadcast.emit('judge unlooking', id)
+    });
+
     socket.on('decision', function(chosen) {
 
       // Example
@@ -100,10 +104,12 @@ module.exports = function(io, db) {
     socket.on('player ready', function() {
       playerReady++;
 
+      console.log("Player ready is at ", playerReady);
+
       if(playerReady === 4 && running === false){
         running = true;
-        playerReady = 0;
         countdown = 30;
+        clearInterval(roundInterval);
 
         roundInterval = function() {
           if (countdown < 1) {
@@ -111,20 +117,24 @@ module.exports = function(io, db) {
             clearInterval(this);
           }
 
-          clearInterval(roundInterval);
-
           io.emit('timer', {
             countdown: countdown
           });
+
+
+          console.log(countdown);
           countdown--;
         };
-        setInterval(roundInterval, 1000)
+
+        setInterval(roundInterval, 1000);
+        roundInterval = undefined;
       }
 
     });
 
     socket.on('next round', function() {
       running = false;
+      playerReady = 0;
       StartGame();
     })
 

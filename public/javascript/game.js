@@ -85,7 +85,8 @@ $(document).ready(function() {
         socket.emit('decision', {
           playerID: $(this).attr('data-id'),
           cardId: $(this).attr('id')
-        })
+        });
+        $(tag).closest(".choice-card").removeClass('judge-hover');
 
       })
     }
@@ -99,20 +100,22 @@ $(document).ready(function() {
 
     // Set stuff in the winner modal
     $('#winner-modal-title').text("Winner: " + winner.name);
-    $('#winner-modal-meme').attr('src', $(card).attr('src'))
-      .load(function() {
+    $('#winner-modal-meme').attr('src', $(card).attr('src'));
+      //.load(function() {
         $('#best-meme').modal('show');
-        setTimeout(function() {
-          $('#best-meme').modal('hide');
 
-          //start next round here
+        setTimeout(function() {
+          $('#best-meme').modal('hide').load(function() {
+
+          });
+
           if(judgeMode){
             socket.emit('next round');
           }
 
         }, 3000);
 
-      });
+      //});
 
   });
 
@@ -131,16 +134,26 @@ $(document).ready(function() {
   });
 
 
-  $(".choice-card-img").hover(function() {
+  $(".choice-card-img").mouseenter(function() {
     if (judgeMode) {
       socket.emit('judge hovering', $(this).attr('id'))
     }
   });
 
+  $(".choice-card-img").mouseleave( function() {
+    if (judgeMode) {
+      socket.emit('judge unhovering', $(this).attr('id'))
+    }
+  });
+
   socket.on('judge looking', function(imgId) {
     var tag = '#' + imgId;
-    $(tag).closest(".choice-card").toggleClass('judge-hover')
+    $(tag).closest(".choice-card").addClass('judge-hover');
+  });
 
+  socket.on('judge unlooking', function(imgId) {
+    var tag = '#' + imgId;
+    $(tag).closest(".choice-card").removeClass('judge-hover');
   });
 
 
