@@ -63,11 +63,12 @@ $(document).ready(function() {
       // Judge mode
       console.log("You the judge");
       judgeMode = true; // See!? I told you -- Judge Mode
-
+      $('.topic-image').addClass("player-judge");
 
     } else {
       // Players Mode
       judgeMode = false;
+      $('.topic-image').removeClass("player-judge");
       $(".choice-card-img").off('click');
 
     }
@@ -121,6 +122,7 @@ $(document).ready(function() {
   socket.on('player added', function(players) {
     $(".players").empty();
     players.forEach(function(item, index) {
+      console.log(item);
       $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score'>" + item.score + "</span></div>");
     });
   });
