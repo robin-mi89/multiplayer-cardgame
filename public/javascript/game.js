@@ -95,7 +95,21 @@ $(document).ready(function() {
   socket.on('announce winner', function(winner) {
     // Ex. winner = {name: "Misha Metrikin, card_id: "card-1"}
     var card = "#" + winner.card_id;
-
+    console.log("self: " + JSON.stringify(self));
+    console.log("winner: " + JSON.stringify(winner));
+    if(self.uid === winner.uid)
+    {
+      self.score++;
+    }
+    console.log($('.player-score'));
+    $(".player-score").each(function()
+    {
+      if($(this).attr("id") === "score" + winner.uid)
+      {
+        var newScore = parseInt($(this).text()) + 1;
+        $(this).text(newScore);
+      }
+    });
     console.log("Winner ready to annouce with id ", card);
 
     // Set stuff in the winner modal
@@ -119,6 +133,11 @@ $(document).ready(function() {
 
   });
 
+  function rewriteScore()
+  {
+
+  }
+
   socket.on('timer', function(data) {
     // TODO:(Victor Tsang) Improve UI of timer here..
     $('#time').html("Time Remaining: " + data.countdown);
@@ -129,7 +148,8 @@ $(document).ready(function() {
   socket.on('player added', function(players) {
     $(".players").empty();
     players.forEach(function(item, index) {
-      $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score'>" + item.score + "</span></div>");
+      //console.log(item);
+      $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score"+item.uid+"'>" + item.score + "</span></div>");
     });
   });
 
