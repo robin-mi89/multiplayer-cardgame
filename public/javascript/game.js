@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
-  var socket    = io(),
-      self      = {},
-      submitted = false,
-      roundSubs = 0,
-      judgeMode = false;
+  var socket = io(),
+    self = {},
+    submitted = false,
+    roundSubs = 0,
+    judgeMode = false;
 
   $.get('/api/user', function(user) {
     self = user;
@@ -24,6 +24,7 @@ $(document).ready(function() {
       if (messageInput !== '') {
         var message = {
           name: self.user_name,
+          photo: self.photo,
           text: messageInput
         };
         socket.emit('chat message', message);
@@ -35,7 +36,7 @@ $(document).ready(function() {
 
     socket.on('chat message', function(message) {
 
-      var msg = "<p class='chat-p'>" + message.name + ': ' + message.text + "</p>";
+      var msg = "<p class='chat-p'><img class='chat-thumbnail' src='" + message.photo + "'>" + ': ' + message.text + "</p>";
       var $chatDsp = $(".chat-display");
 
       $chatDsp[0].scrollTop = $chatDsp[0].scrollHeight;
@@ -75,7 +76,7 @@ $(document).ready(function() {
 
   socket.on('judgment round', function() {
 
-    if(judgeMode){
+    if (judgeMode) {
       $(".choice-card-img").on('click', function() {
         socket.emit('decision', {
           playerID: $(this).attr('data-id'),
@@ -92,9 +93,9 @@ $(document).ready(function() {
 
     console.log("Winner ready to annouce with id ", card);
 
-      // Set stuff in the winner modal
-      $('#winner-modal-title').text("Winner: " + winner.name);
-      $('#winner-modal-meme').attr('src', $(card).attr('src'))
+    // Set stuff in the winner modal
+    $('#winner-modal-title').text("Winner: " + winner.name);
+    $('#winner-modal-meme').attr('src', $(card).attr('src'))
       .load(function() {
         $('#best-meme').modal('show');
         setTimeout(function() {
@@ -118,13 +119,13 @@ $(document).ready(function() {
   socket.on('player added', function(players) {
     $(".players").empty();
     players.forEach(function(item, index) {
-      $(".players").append("<h6>" + item.name + "</h6>");
+      $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score'>" + item.score + "</span></div>");
     });
   });
 
 
   $(".choice-card-img").hover(function() {
-    if(judgeMode){
+    if (judgeMode) {
       socket.emit('judge hovering', $(this).attr('id'))
     }
   });
@@ -151,9 +152,9 @@ $(document).ready(function() {
     })
 
   });
-  
+
   socket.on('round end', function() {
-    if(!submitted){
+    if (!submitted) {
       SendSubmission(self);
     }
     $(".timer").hide();
@@ -183,7 +184,7 @@ $(document).ready(function() {
     submission = {
       user: user.id,
       meme: user.meme ||
-      'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
+        'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
       //TODO: What should be the default if nothing submitted?
     };
     socket.emit('meme submission', submission);
