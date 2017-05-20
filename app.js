@@ -12,7 +12,6 @@ var flash = require('connect-flash');
 // Add routes here
 var index = require('./routes/index');
 var memes = require('./routes/memes');
-var googleAuth = require('./routes/google-auth');
 
 var app = express();
 
@@ -45,7 +44,7 @@ app.use(flash());
 
 app.use('/', index);
 app.use('/memes', memes);
-app.use('', googleAuth);
+require('./routes/google-auth.js')(app, passport);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
