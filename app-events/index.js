@@ -11,6 +11,7 @@ module.exports = function(io, db) {
     roundSubs = 0,
     actJudge = undefined;
 
+    var running = false;
     var playerReady = 0;
     var roundInterval;
 
@@ -98,7 +99,8 @@ module.exports = function(io, db) {
     socket.on('player ready', function() {
       playerReady++;
 
-      if(playerReady === 4){
+      if(playerReady === 4 && running === false){
+        running = true;
         playerReady = 0;
         countdown = 30;
 
@@ -108,20 +110,20 @@ module.exports = function(io, db) {
             clearInterval(this);
           }
 
+          clearInterval(roundInterval);
+
           io.emit('timer', {
             countdown: countdown
           });
           countdown--;
         };
-
         setInterval(roundInterval, 1000)
       }
 
     });
 
     socket.on('next round', function() {
-
-
+      running = false;
       StartGame();
     })
 
@@ -159,22 +161,6 @@ module.exports = function(io, db) {
       actJudge = players[judgeInd];
       judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
       io.emit('start round', round);
-
-      // countdown = 30;
-      //
-      // roundInterval = function() {
-      //   if (countdown < 1) {
-      //     io.emit('round end');
-      //     clearInterval(this);
-      //   }
-      //
-      //   io.emit('timer', {
-      //     countdown: countdown
-      //   });
-      //   countdown--;
-      // };
-      //
-      // setInterval(roundInterval, 1000)
 
     });
   }
