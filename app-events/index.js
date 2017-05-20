@@ -69,6 +69,7 @@ module.exports = function(io, db) {
 
         if (roundSubs === 4) {
           // All four things submitted
+          roundSubs = 0;
           clearInterval(roundInterval);
           io.emit('judgment round')
         }
