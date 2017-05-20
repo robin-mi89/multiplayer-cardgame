@@ -67,7 +67,7 @@ module.exports = function(io, db) {
         roundSubs++;
         io.emit('generate card', sub);
 
-        if (roundSubs === 4) {
+        if (roundSubs >= 4) {
           // All four things submitted
           roundSubs = 0;
           clearInterval(roundInterval);
@@ -105,11 +105,11 @@ module.exports = function(io, db) {
     socket.on('player ready', function() {
       playerReady++;
 
-
       if(playerReady === 4 && running === false){
         running = true;
         countdown = 30;
         clearInterval(roundInterval);
+        roundInterval = undefined;
 
         roundInterval = function() {
           if (countdown < 1) {
@@ -118,14 +118,13 @@ module.exports = function(io, db) {
           }
 
           io.emit('timer', {
-            countdown: countdown
+            ct: countdown
           });
 
           countdown--;
         };
 
         setInterval(roundInterval, 1000);
-        roundInterval = undefined;
       }
 
     });
