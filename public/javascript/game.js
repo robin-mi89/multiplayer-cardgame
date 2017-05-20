@@ -62,8 +62,7 @@ $(document).ready(function() {
     }).load(function() {
       if (self.id === round.judgeID) {
         // Judge mode
-        console.log("You the judge");
-        judgeMode = true; // See!? I told you -- Judge Mode
+        judgeMode = true;
         $('.topic-image').addClass("player-judge");
 
       } else {
@@ -121,7 +120,7 @@ $(document).ready(function() {
 
   socket.on('timer', function(data) {
     // TODO:(Victor Tsang) Improve UI of timer here..
-    $('#time').html("Time Remaining: " + data.countdown);
+    $('#time').html("Time Remaining: " + data.ct);
 
   });
 
@@ -183,7 +182,6 @@ $(document).ready(function() {
     $(".timer").hide();
     $("#player-cards").hide();
     $("#choice-card-container").show();
-    self.meme = undefined;
 
   });
 
@@ -198,7 +196,7 @@ $(document).ready(function() {
       "src": card.meme,
       "data-id": card.user
     }).load(function() {
-      $(this).closest('.choice-card').css('display', 'block');
+      $(this).closest('.choice-card').show();
     })
 
   }
@@ -208,14 +206,14 @@ $(document).ready(function() {
       user: user.id,
       meme: user.meme ||
         'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
-      //TODO: What should be the default if nothing submitted?
     };
     socket.emit('meme submission', submission);
     submitted = true;
   }
 
   function resetRound() {
-    $(".choice-card").css('display', 'none');
+    self.meme = null;
+    $(".choice-card").hide();
     $(".timer").show();
     $("#player-cards").show();
     $(".choice-card-img").attr('src', 'http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg');
