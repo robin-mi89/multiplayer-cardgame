@@ -7,7 +7,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var db = require("../models");
 
 // load the auth variables
-var secrets = require('../config/secrets.js');
+//var secrets = require('../config/secrets.js');
 
 module.exports = function(passport) {
 
