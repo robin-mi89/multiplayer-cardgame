@@ -15,12 +15,12 @@ module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
         // console.log("in serialize");
         // console.log("user: " + JSON.stringify(user));
-        done(null, user[0].id);
+        done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        console.log("in deserialize");
+        // console.log("in deserialize");
         db.User.findAll(
                 {
                     where: {id: id}
@@ -44,12 +44,12 @@ module.exports = function(passport) {
 
     },
     function(req, token, refreshToken, profile, done) {
-        console.log("req: " + JSON.stringify(req.body));
-        console.log("token: " + JSON.stringify(token));
-        console.log("refresh token: " + JSON.stringify(refreshToken));
-        console.log("profile: " + JSON.stringify(profile));
-        console.log("done: " + JSON.stringify(done));
-        console.log("\n\n==============================================")
+        // console.log("req: " + JSON.stringify(req.body));
+        // console.log("token: " + JSON.stringify(token));
+        // console.log("refresh token: " + JSON.stringify(refreshToken));
+        // console.log("profile: " + JSON.stringify(profile));
+        // console.log("done: " + JSON.stringify(done));
+        // console.log("\n\n==============================================")
         //make the code asynchronous
         //User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
@@ -62,9 +62,9 @@ module.exports = function(passport) {
                 {
                     if (dbUser.length > 0)
                     {
-                        console.log("found user");
-                        console.log(dbUser);
-                        return done(null, dbUser);;
+                        // console.log("found user");
+                        // console.log(dbUser);
+                        return done(null, dbUser[0]);;
                     }
                     else
                     {
@@ -78,7 +78,7 @@ module.exports = function(passport) {
                         photo: profile.photos[0].value
                         }).then(function(dbUser)
                         {
-                            return done(null, dbUser);
+                            return done(null, dbUser.dataValues);
                         });
                     }
                 })
