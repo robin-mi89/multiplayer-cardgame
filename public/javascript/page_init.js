@@ -33,8 +33,8 @@
 $("#meme-submit").click(function() {
   $(".timer").hide();
   $("#player-cards").hide();
-  $("#top-text").val("");
-  $("#bottom-text").val("");
+  // $("#top-text").val("");
+  // $("#bottom-text").val("");
   //need a transition function to wait for all user to submit or time-out
   $("#choice-card-container").show();
 
