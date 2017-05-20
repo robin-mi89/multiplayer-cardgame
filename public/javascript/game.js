@@ -63,13 +63,13 @@ $(document).ready(function() {
       if (self.id === round.judgeID) {
         // Judge mode
         console.log("You the judge");
-
         judgeMode = true; // See!? I told you -- Judge Mode
-        // TODO: Indicate to player they are judge
+        $('.topic-image').addClass("player-judge");
 
       } else {
         // Players Mode
         judgeMode = false;
+        $('.topic-image').removeClass("player-judge");
         $(".choice-card-img").off('click');
       }
       socket.emit('player ready');
