@@ -116,6 +116,8 @@ $(document).ready(function() {
   });
 
   // TODO: (Victor Tsang) Implement score using this event
+  // add player-just class to player div to highlight judge
+
   socket.on('player added', function(players) {
     $(".players").empty();
     players.forEach(function(item, index) {
