@@ -7,6 +7,10 @@ var express   = require('express'),
     Sequelize = require('sequelize'),
     request   = require('request');
 
+if(!process.env.NODE_ENV){
+  memesConf = require('../config/meme_config');
+}
+
 //memesConf = require('../config/meme_config');
 
 
