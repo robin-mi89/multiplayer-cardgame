@@ -66,11 +66,18 @@ module.exports = function(io, db) {
       socket.broadcast.emit('judge looking', id)
     });
 
-    socket.on('decision', function(winID) {
-      var winner = playrRef[winID];
+    socket.on('decision', function(chosen) {
+
+      // Example
+      // winner = {
+      //          playerID: Gjeo-BCRYUzLDVGIAAAF,  // Socket ID
+      //          cardId: "card-1"                 // id = "card-1"
+      //        }
+
+      var winner = playrRef[chosen.playerID];
       io.emit('announce winner', {
         name: winner.user_name,
-        card_id: winner.id
+        card_id: chosen.cardId
       });
 
     })

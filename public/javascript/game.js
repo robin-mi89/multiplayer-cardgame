@@ -77,17 +77,21 @@ $(document).ready(function() {
 
     if(judgeMode){
       $(".choice-card-img").on('click', function() {
-        socket.emit('decision', $(this).attr('data-id'))
+        socket.emit('decision', {
+          playerID: $(this).attr('data-id'),
+          cardId: $(this).attr('id')
+        })
+
       })
     }
   });
 
   socket.on('announce winner', function(winner) {
-    // Ex. winner = {name: "Misha Metrikin, card_id: LbmAelhUb2mDN072AAAF}
+    // Ex. winner = {name: "Misha Metrikin, card_id: "card-1"}
     var card = "#" + winner.card_id;
 
-    // Still needs work
-    $(".choice-card").on('click', card, function() {
+    console.log("Winner ready to annouce with id ", card);
+
       // Set stuff in the winner modal
       $('#winner-modal-title').text("Winner: " + winner.name);
       $('#winner-modal-meme').attr('src', $(card).attr('src'))
@@ -95,13 +99,12 @@ $(document).ready(function() {
         $('#best-meme').modal('show');
         setTimeout(function() {
           $('#best-meme').modal('hide');
+
           //start next round here
+
         }, 3000);
 
       });
-
-
-    });
 
   });
 
