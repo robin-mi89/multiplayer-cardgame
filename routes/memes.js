@@ -7,7 +7,7 @@ var express   = require('express'),
     Sequelize = require('sequelize'),
     request   = require('request');
 
-memesConf = require('../config/meme_config');
+//memesConf = require('../config/meme_config');
 
 
 // BasePath = /meme
@@ -34,8 +34,8 @@ router.post('/create', function(req, res) {
 
   var formData = {
       template_id : req.body.memeId,
-      username : require('../config/meme_config').username || process.env.IMGF_USERNAME,
-      password : require('../config/meme_config').password || process.env.IMGF_PASSWRD,
+      username : process.env.IMGF_USERNAME || require('../config/meme_config').username,
+      password : process.env.IMGF_PASSWRD || require('../config/meme_config').password,
       text0 : req.body.top,
       text1 : req.body.bottom
   };
