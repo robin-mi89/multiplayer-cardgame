@@ -135,13 +135,20 @@ main {
   &-display {
     flex: 1;
     overflow-y: auto;
-  padding-bottom:10px;
+    padding-bottom:10px;
+  }
+
+  &-thumbnail{
+    border:1px solid antiquewhite;
+    border-radius: 50%;
+    max-width: 35px;
+    margin-right:10px;
   }
 
   &-p{
     font-size:14px;
     word-wrap: break-word;
-    margin-bottom:2px;
+    margin-bottom:10px;
   }
 
   &-input {
@@ -169,6 +176,16 @@ main {
   }
 }
 
+.player{
+  margin-bottom:20px;
+
+  &-image{
+    border:1px solid antiquewhite;
+    border-radius: 50%;
+    margin-right:20px;
+  }
+}
+
 .card {
   font-family: 'Source Sans Pro', sans-serif;
   width: 100%;
@@ -184,11 +201,6 @@ main {
   &-selected {
     border: 5px solid $select-color;
   }
-}
-
-.judge-hover{
-  transition: all 0.25s;
-  transform: scale(1.05);
 }
 
 .choice {

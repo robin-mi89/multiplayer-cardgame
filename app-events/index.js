@@ -2,16 +2,16 @@ Sequelize = require('sequelize');
 
 module.exports = function(io, db) {
 
-  var players   = [],
-      judgeInd  = 0,
-      countdown = 30,
-      round     = {},
-      pTotal    = 4,
-      playrRef  = {},
-      roundSubs = 0,
-      actJudge  = undefined;
+  var players = [],
+    judgeInd = 0,
+    countdown = 30,
+    round = {},
+    pTotal = 4,
+    playrRef = {},
+    roundSubs = 0,
+    actJudge = undefined;
 
-  io.on('connection', function(socket){
+  io.on('connection', function(socket) {
     require('./chat')(socket, db, io);
 
     socket.on('player join', function(user) {
@@ -19,20 +19,29 @@ module.exports = function(io, db) {
       user.id = socket.id;
       user.socket = socket;
 
-      if(players.length < pTotal){
+      if (players.length < pTotal) {
         players.push(user);
 
         var active = players.map(function(each, i) {
-          return {uid: each.id, name: each.user_name, order: i};
+          return {
+            uid: each.id,
+            name: each.user_name,
+            photo: each.photo,
+            score: 0,
+            order: i
+          };
         });
 
         io.emit('player added', active);
       }
 
-      user.socket.emit("userID", {uid: user.id, order: players.length});
+      user.socket.emit("userID", {
+        uid: user.id,
+        order: players.length
+      });
 
       // When 4 players login Start game
-      if(players.length >= 4) {
+      if (players.length >= 4) {
 
         // Create object reference for players by their Socket.id
         playrRef = players.reduce(function(map, user) {
@@ -47,14 +56,14 @@ module.exports = function(io, db) {
 
     socket.on('meme submission', function(sub) {
 
-      if(playrRef.hasOwnProperty(sub.user)){
+      if (playrRef.hasOwnProperty(sub.user)) {
         // Count submission
 
         sub.round = roundSubs;
         roundSubs++;
         io.emit('generate card', sub);
 
-        if(roundSubs === 4){
+        if (roundSubs === 4) {
           // All four things submitted
           io.emit('judgment round')
         }
@@ -100,13 +109,13 @@ module.exports = function(io, db) {
   });
 
 
-  function StartGame(){
+  function StartGame() {
 
     db.Meme.find({
       order: [
         Sequelize.fn('RAND')
       ]
-    }).then(function(meme){
+    }).then(function(meme) {
 
       round = {
         meme: meme,
@@ -120,12 +129,14 @@ module.exports = function(io, db) {
       countdown = 30;
 
       setInterval(function() {
-        if(countdown < 1){
+        if (countdown < 1) {
           io.emit('round end');
           clearInterval(this);
         }
 
-        io.emit('timer', {countdown: countdown});
+        io.emit('timer', {
+          countdown: countdown
+        });
         countdown--;
       }, 1000)
 

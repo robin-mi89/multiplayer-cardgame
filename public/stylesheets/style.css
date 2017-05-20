@@ -131,10 +131,17 @@ main {
   padding-bottom: 10px;
 }
 
+.chat-thumbnail {
+  border: 1px solid antiquewhite;
+  border-radius: 50%;
+  max-width: 35px;
+  margin-right: 10px;
+}
+
 .chat-p {
   font-size: 14px;
   word-wrap: break-word;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
 }
 
 .chat-input {
@@ -157,6 +164,16 @@ main {
   max-height: 380px;
 }
 
+.player {
+  margin-bottom: 20px;
+}
+
+.player-image {
+  border: 1px solid antiquewhite;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
 .card {
   font-family: 'Source Sans Pro', sans-serif;
   width: 100%;
@@ -172,11 +189,6 @@ main {
 
 .card-selected {
   border: 5px solid red;
-}
-
-.judge-hover {
-  transition: all 0.25s;
-  transform: scale(1.05);
 }
 
 .choice-container:after {
