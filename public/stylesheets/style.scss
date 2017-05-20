@@ -203,6 +203,11 @@ main {
   }
 }
 
+.judge-hover{
+  transition: all 0.25s;
+  transform: scale(1.05);
+}
+
 .choice {
   &-container {
     &:after {
