@@ -11,6 +11,9 @@ module.exports = function(io, db) {
     roundSubs = 0,
     actJudge = undefined;
 
+    var playerReady = 0;
+    var roundInterval;
+
   io.on('connection', function(socket) {
     require('./chat')(socket, db, io);
 
@@ -65,6 +68,7 @@ module.exports = function(io, db) {
 
         if (roundSubs === 4) {
           // All four things submitted
+          clearInterval(roundInterval);
           io.emit('judgment round')
         }
       }
@@ -89,6 +93,36 @@ module.exports = function(io, db) {
         card_id: chosen.cardId
       });
 
+    });
+
+    socket.on('player ready', function() {
+      playerReady++;
+
+      if(playerReady === 4){
+        playerReady = 0;
+        countdown = 30;
+
+        roundInterval = function() {
+          if (countdown < 1) {
+            io.emit('round end');
+            clearInterval(this);
+          }
+
+          io.emit('timer', {
+            countdown: countdown
+          });
+          countdown--;
+        };
+
+        setInterval(roundInterval, 1000)
+      }
+
+    });
+
+    socket.on('next round', function() {
+
+
+      StartGame();
     })
 
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.
@@ -126,19 +160,21 @@ module.exports = function(io, db) {
       judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
       io.emit('start round', round);
 
-      countdown = 30;
-
-      setInterval(function() {
-        if (countdown < 1) {
-          io.emit('round end');
-          clearInterval(this);
-        }
-
-        io.emit('timer', {
-          countdown: countdown
-        });
-        countdown--;
-      }, 1000)
+      // countdown = 30;
+      //
+      // roundInterval = function() {
+      //   if (countdown < 1) {
+      //     io.emit('round end');
+      //     clearInterval(this);
+      //   }
+      //
+      //   io.emit('timer', {
+      //     countdown: countdown
+      //   });
+      //   countdown--;
+      // };
+      //
+      // setInterval(roundInterval, 1000)
 
     });
   }

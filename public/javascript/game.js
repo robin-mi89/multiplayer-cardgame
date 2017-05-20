@@ -50,6 +50,8 @@ $(document).ready(function() {
   });
 
   socket.on('start round', function(round) {
+    resetRound();
+
     submitted = false;
     roundSubs = 0;
 
@@ -57,20 +59,22 @@ $(document).ready(function() {
       "src": round.meme.url,
       "id": round.meme.id,
       "data-external": round.meme.imgFlipID
+    }).load(function() {
+      if (self.id === round.judgeID) {
+        // Judge mode
+        console.log("You the judge");
+
+        judgeMode = true; // See!? I told you -- Judge Mode
+        // TODO: Indicate to player they are judge
+
+      } else {
+        // Players Mode
+        judgeMode = false;
+        $(".choice-card-img").off('click');
+      }
+      socket.emit('player ready');
+
     });
-
-    if (self.id === round.judgeID) {
-      // Judge mode
-      console.log("You the judge");
-      judgeMode = true; // See!? I told you -- Judge Mode
-
-
-    } else {
-      // Players Mode
-      judgeMode = false;
-      $(".choice-card-img").off('click');
-
-    }
 
   });
 
@@ -102,6 +106,9 @@ $(document).ready(function() {
           $('#best-meme').modal('hide');
 
           //start next round here
+          if(judgeMode){
+            socket.emit('next round');
+          }
 
         }, 3000);
 
@@ -189,6 +196,14 @@ $(document).ready(function() {
     };
     socket.emit('meme submission', submission);
     submitted = true;
+  }
+
+  function resetRound() {
+    $(".choice-card").hide();
+    $(".timer").show();
+    $("#player-cards").show();
+    $(".choice-card-img").attr('src', 'http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg');
+    $("#choice-card-container").hide();
   }
 
 });
