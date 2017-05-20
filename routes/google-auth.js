@@ -7,7 +7,7 @@ module.exports = function(app, passport)
     { failureRedirect: '/' }),
     function(req, res) 
     {
-        console.log("redirecting\n\n");
+        //console.log("redirecting\n\n");
         res.redirect('/');
     });
 
@@ -29,12 +29,6 @@ module.exports = function(app, passport)
     {
         req.logout();
         res.redirect('/');
-    });
-
-    app.get('/api/user', function(req, res)
-    {
-        console.log(req.session);
-        res.json({user: req.user});
     });
 
 }
