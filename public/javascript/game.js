@@ -96,15 +96,12 @@ $(document).ready(function() {
     var card = "#" + winner.card_id;
     console.log("self: " + JSON.stringify(self));
     console.log("winner: " + JSON.stringify(winner));
-    if(self.uid === winner.uid)
-    {
+    if (self.uid === winner.uid) {
       self.score++;
     }
     console.log($('.player-score'));
-    $(".player-score").each(function()
-    {
-      if($(this).attr("id") === "score" + winner.uid)
-      {
+    $(".player-score").each(function() {
+      if ($(this).attr("id") === "score" + winner.uid) {
         var newScore = parseInt($(this).text()) + 1;
         $(this).text(newScore);
       }
@@ -114,33 +111,31 @@ $(document).ready(function() {
     // Set stuff in the winner modal
     $('#winner-modal-title').text("Winner: " + winner.name);
     $('#winner-modal-meme').attr('src', $(card).attr('src'));
-      //.load(function() {
-        $('#best-meme').modal('show');
+    //.load(function() {
+    $('#best-meme').modal('show');
 
-        setTimeout(function() {
-          $('#best-meme').modal('hide').load(function() {
+    setTimeout(function() {
+      $('#best-meme').modal('hide').load(function() {
 
-          });
+      });
 
-          if(judgeMode){
-            socket.emit('next round');
-          }
+      if (judgeMode) {
+        socket.emit('next round');
+      }
 
-        }, 3000);
+    }, 3000);
 
-      //});
+    //});
 
   });
 
-  function rewriteScore()
-  {
+  function rewriteScore() {
 
   }
 
   socket.on('timer', function(data) {
     // TODO:(Victor Tsang) Improve UI of timer here..
-    $('#time').html("Time Remaining: " + data.ct);
-
+    $('.progress-bar').css('width', (data.ct * 3.33) + '%');
   });
 
   // TODO: (Victor Tsang) Implement score using this event
@@ -149,9 +144,9 @@ $(document).ready(function() {
   socket.on('player added', function(players) {
     $(".players").empty();
     players.forEach(function(item, index) {
-      
+
       //console.log(item);
-      $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score"+item.uid+"'>" + item.score + "</span></div>");
+      $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score" + item.uid + "'>" + item.score + "</span></div>");
 
 
     });
@@ -164,7 +159,7 @@ $(document).ready(function() {
     }
   });
 
-  $(".choice-card-img").mouseleave( function() {
+  $(".choice-card-img").mouseleave(function() {
     if (judgeMode) {
       socket.emit('judge unhovering', $(this).attr('id'))
     }
@@ -238,7 +233,7 @@ $(document).ready(function() {
     $(".choice-card").hide();
     $(".timer").show();
     $("#player-cards").show();
-    $(".choice-card-img").attr('src', 'http://i3.ytimg.com/vi/frlDkcG8Z9E/hqdefault.jpg');
+    $(".choice-card-img").attr('src', '/image/waiting.jpg');
     $("#choice-card-container").hide();
   }
 
