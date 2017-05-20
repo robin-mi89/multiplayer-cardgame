@@ -133,22 +133,23 @@ module.exports = function(io, db) {
       running = false;
       playerReady = 0;
       StartGame();
-    })
+    });
 
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.
-    // socket.on('disconnect', function(){
-    //
-    //   // Rebuild player array without disconnected user
-    //   var remain = [];
-    //
-    //   players.map(function(each) {
-    //     if(!each.id === socket.id){
-    //         remain.push(each);
-    //     }
-    //   }, this);
-    //   players = remain;
-    //
-    // });
+    socket.on('disconnect', function(){
+
+      players = [];
+      // Rebuild player array without disconnected user
+      // var remain = [];
+      //
+      // players.map(function(each) {
+      //   if(!each.id === socket.id){
+      //       remain.push(each);
+      //   }
+      // }, this);
+      // players = remain;
+
+    });
 
   });
 
