@@ -1,13 +1,14 @@
 /**
  * Created by mikhailmetrikin on 5/10/17.
  */
-var express   = require('express'),
-    db        = require('../models'),
-    router    = express.Router(),
-    Sequelize = require('sequelize'),
-    request   = require('request');
+var express = require('express'),
+  db = require('../models'),
+  router = express.Router(),
+  Sequelize = require('sequelize'),
+  request = require('request');
 
-//memesConf = require('../config/meme_config');
+//uncomment this
+// memesConf = require('../config/meme_config');
 
 
 // BasePath = /meme
@@ -33,15 +34,15 @@ router.post('/create', function(req, res) {
   // TODO:(Mikhail Metrikin): Rewrite this logic to check for environment then load vars
 
   var formData = {
-      template_id : req.body.memeId,
-      username : process.env.IMGF_USERNAME || require('../config/meme_config').username,
-      password : process.env.IMGF_PASSWRD || require('../config/meme_config').password,
-      text0 : req.body.top,
-      text1 : req.body.bottom
+    template_id: req.body.memeId,
+    username: process.env.IMGF_USERNAME || require('../config/meme_config').username,
+    password: process.env.IMGF_PASSWRD || require('../config/meme_config').password,
+    text0: req.body.top,
+    text1: req.body.bottom
   };
 
   request.post("https://api.imgflip.com/caption_image", {
-    form : formData
+    form: formData
   }, function(error, response, body) {
 
     var answer = JSON.parse(body);
