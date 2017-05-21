@@ -138,7 +138,6 @@ module.exports = function(io, db) {
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.
     socket.on('disconnect', function(){
 
-      players = [];
       // Rebuild player array without disconnected user
       // var remain = [];
       //
