@@ -170,8 +170,8 @@ main {
   max-width: 45%;
   background-color: white; }
   .choice-card:hover {
-    transition: all 0.25s !important;
-    transform: scale(1.05) !important; }
+    transition: all 0.25s;
+    transform: scale(1.05); }
   .choice-card:focus, .choice-card :active {
     width: 100%;
     height: 200px; }

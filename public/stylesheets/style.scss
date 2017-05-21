@@ -237,8 +237,8 @@ main {
     background-color: white;
 
     &:hover {
-      transition: all 0.25s !important;
-      transform: scale(1.05) !important;
+      transition: all 0.25s;
+      transform: scale(1.05);
     }
 
     &:focus, :active {
