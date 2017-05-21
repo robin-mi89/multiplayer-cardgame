@@ -85,7 +85,9 @@ $(document).ready(function() {
           playerID: $(this).attr('data-id'),
           cardId: $(this).attr('id')
         });
-        $(tag).closest(".choice-card").removeClass('judge-hover');
+        $(this).closest(".choice-card")
+            .removeClass('judge-hover')
+            .mouseleave();
 
       })
     }
@@ -94,12 +96,10 @@ $(document).ready(function() {
   socket.on('announce winner', function(winner) {
     // Ex. winner = {name: "Misha Metrikin, card_id: "card-1"}
     var card = "#" + winner.card_id;
-    console.log("self: " + JSON.stringify(self));
-    console.log("winner: " + JSON.stringify(winner));
+
     if (self.uid === winner.uid) {
       self.score++;
     }
-    console.log($('.player-score'));
     $(".player-score").each(function() {
       if ($(this).attr("id") === "score" + winner.uid) {
         var newScore = parseInt($(this).text()) + 1;
@@ -125,13 +125,7 @@ $(document).ready(function() {
 
     }, 3000);
 
-    //});
-
   });
-
-  function rewriteScore() {
-
-  }
 
   socket.on('timer', function(data) {
     // TODO:(Victor Tsang) Improve UI of timer here..
@@ -178,11 +172,19 @@ $(document).ready(function() {
 
   $('#meme-submit').on('click', function() {
 
+    var $topText    = $('#top-text'),
+        $bottomText = $('#bottom-text');
+
     var memeText = {
       memeId: $('.topic-image').attr("data-external"),
-      top: $('#top-text').val().trim() || '',
-      bottom: $('#bottom-text').val().trim() || ''
+      top: $topText.val().trim() || '',
+      bottom: $bottomText.val().trim() || ''
     };
+
+    $("#player-cards").hide();
+    $("#choice-card-container").show();
+    $topText.val("");
+    $bottomText.val("");
 
     // Generates a meme with get request to route
     $.post('/memes/create', memeText, function(resp) {

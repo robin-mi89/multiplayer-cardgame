@@ -1,19 +1,17 @@
 Sequelize = require('sequelize');
-
 module.exports = function(io, db) {
 
-  var players = [],
-    judgeInd = 0,
-    countdown = 30,
-    round = {},
-    pTotal = 4,
-    playrRef = {},
-    roundSubs = 0,
-    actJudge = undefined;
-
-    var running = false;
-    var playerReady = 0;
-    var roundInterval;
+  var players       = [],
+      judgeInd      = 0,
+      countdown     = 30,
+      round         = {},
+      pTotal        = 4,
+      playrRef      = {},
+      roundSubs     = 0,
+      actJudge      = undefined,
+      running       = false,
+      playerReady   = 0,
+      roundInterval = undefined;
 
   io.on('connection', function(socket) {
     require('./chat')(socket, db, io);
@@ -53,7 +51,6 @@ module.exports = function(io, db) {
           return map;
         }, {});
         StartGame();
-
       }
 
     });
@@ -91,7 +88,7 @@ module.exports = function(io, db) {
       // winner = {
       //          playerID: Gjeo-BCRYUzLDVGIAAAF,  // Socket ID
       //          cardId: "card-1"                 // id = "card-1"
-      //        }
+      // }
 
       var winner = playrRef[chosen.playerID];
       io.emit('announce winner', {
