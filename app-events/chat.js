@@ -1,5 +1,5 @@
 // Chat message implementation here.
-module.exports = function(socket, db, io){
+module.exports = function(socket, db, io, room){
     socket.on('chat message', function(msg){
 
       db.User.findOne({
@@ -14,12 +14,11 @@ module.exports = function(socket, db, io){
         });
       });
 
-      io.emit('chat message', msg);
+      io.to(room).emit('chat message', msg);
     });
 
     socket.on('disconnect', function(){
       // Chat disconnect probably not important?
-
     });
 
 };

@@ -7,7 +7,6 @@ module.exports = function(io, db) {
       rooms         = {};
 
   io.on('connection', function(socket) {
-    require('./chat')(socket, db, io);
 
     socket.on('player join', function(user) {
       roomQueue++;
@@ -33,6 +32,9 @@ module.exports = function(io, db) {
       }
 
       socket.join(newRoom);
+
+      // Activate chat
+      require('./chat')(socket, db, io, newRoom);
 
         var active = rooms[newRoom].players.map(function(each, i) {
           return {
@@ -66,8 +68,6 @@ module.exports = function(io, db) {
 
       });
 
-    // });
-
     socket.on('meme submission', function(sub) {
 
       if (rooms[sub.room].playrRef.hasOwnProperty(sub.user)) {
@@ -97,13 +97,6 @@ module.exports = function(io, db) {
     });
 
     socket.on('decision', function(chosen) {
-
-      // Example
-      // winner = {
-      //          playerID: Gjeo-BCRYUzLDVGIAAAF,  // Socket ID
-      //          cardId: "card-1"                 // id = "card-1"
-      //          room: "Room1453"                 // Room id passed back and forth
-      // }
 
       var winner = rooms[chosen.room].playrRef[chosen.playerID];
       io.to(chosen.room).emit('announce winner', {
