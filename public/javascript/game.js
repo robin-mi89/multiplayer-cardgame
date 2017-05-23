@@ -109,7 +109,6 @@ $(document).ready(function() {
         $(this).text(newScore);
       }
     });
-    console.log("Winner ready to annouce with id ", card);
 
     // Set stuff in the winner modal
     $('#winner-modal-title').text("Winner: " + winner.name);
@@ -142,7 +141,6 @@ $(document).ready(function() {
     $(".players").empty();
     players.forEach(function(item, index) {
 
-      //console.log(item);
       $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score" + item.uid + "'>" + item.score + "</span></div>");
 
     });
@@ -211,14 +209,6 @@ $(document).ready(function() {
   });
 
   function generateCard(card) {
-
-    // card = {
-    //   user: user.id,
-    //   room: user.room,
-    //   meme: user.meme ||
-    //   'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
-    // };
-
     var choiceCards = document.getElementsByClassName("choice-card-img");
 
     $(choiceCards[card.round]).attr({

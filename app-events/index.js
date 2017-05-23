@@ -1,18 +1,7 @@
 Sequelize = require('sequelize');
 module.exports = function(io, db) {
 
-  var players       = [],
-      judgeInd      = 0,
-      countdown     = 30,
-      round         = {},
-      pTotal        = 4,
-      playrRef      = {},
-      roundSubs     = 0,
-      actJudge      = undefined,
-      running       = false,
-      playerReady   = 0,
-      roundInterval = undefined,
-
+  var pTotal        = 4,
       newRoom       = undefined,
       roomQueue     = 0,
       rooms         = {};
@@ -151,7 +140,7 @@ module.exports = function(io, db) {
     });
 
     socket.on('next round', function(room) {
-      playerReady = 0;
+      rooms[room].playerReady = 0;
       StartGame(rooms[room]);
     });
 
@@ -181,7 +170,7 @@ module.exports = function(io, db) {
       ]
     }).then(function(meme) {
 
-      round = {
+      var round = {
         meme: meme,
         judgeID: room.players[room.judgeInd].id
       };
