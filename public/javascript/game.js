@@ -98,7 +98,9 @@ $(document).ready(function() {
 
   socket.on('announce winner', function(winner) {
     // Ex. winner = {name: "Misha Metrikin, card_id: "card-1"}
-    var card = "#" + winner.card_id;
+    var card = $("#" + winner.card_id);
+
+    card.mouseleave();
 
     if (self.uid === winner.uid) {
       self.score++;
@@ -112,8 +114,7 @@ $(document).ready(function() {
 
     // Set stuff in the winner modal
     $('#winner-modal-title').text("Winner: " + winner.name);
-    $('#winner-modal-meme').attr('src', $(card).attr('src'));
-    //.load(function() {
+    $('#winner-modal-meme').attr('src', card.attr('src'));
     $('#best-meme').modal('show');
 
     setTimeout(function() {
