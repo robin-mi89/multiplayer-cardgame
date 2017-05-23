@@ -11,20 +11,41 @@ module.exports = function(io, db) {
       actJudge      = undefined,
       running       = false,
       playerReady   = 0,
-      roundInterval = undefined;
+      roundInterval = undefined,
+
+      newRoom       = undefined,
+      roomQueue     = 0,
+      rooms         = {};
 
   io.on('connection', function(socket) {
     require('./chat')(socket, db, io);
 
     socket.on('player join', function(user) {
+      roomQueue++;
 
       user.id = socket.id;
       user.socket = socket;
 
-      if (players.length < pTotal) {
-        players.push(user);
+      if(roomQueue === 1){
+        newRoom = 'room' + String(Math.floor(Math.random() * 10000));
+        rooms[newRoom] = {
+          players: [],
+          room: newRoom,
+          judgeInd: 0,
+          roundSubs: 0,
+          playerReady: 0,
+          roundInterval: undefined
+        };
+      }
 
-        var active = players.map(function(each, i) {
+      if (rooms[newRoom].players.length < pTotal) {
+        rooms[newRoom].players.push(user);
+        user.room = newRoom;
+      }
+
+      socket.join(newRoom);
+
+        var active = rooms[newRoom].players.map(function(each, i) {
           return {
             uid: each.id,
             name: each.user_name,
@@ -34,52 +55,56 @@ module.exports = function(io, db) {
           };
         });
 
-        io.emit('player added', active);
-      }
+        io.to(newRoom).emit('player added', active);
 
-      user.socket.emit("userID", {
+      socket.emit("userID", {
         uid: user.id,
-        order: players.length
+        order: rooms[newRoom].players.length,
+        room: rooms[newRoom].room
       });
 
       // When 4 players login Start game
-      if (players.length >= 4) {
+      if (rooms[newRoom].players.length >= 4) {
 
         // Create object reference for players by their Socket.id
-        playrRef = players.reduce(function(map, user) {
+        rooms[newRoom].playrRef = rooms[newRoom].players.reduce(function(map, user) {
           map[user.id] = user;
           return map;
         }, {});
-        StartGame();
+        roomQueue = 0;
+        StartGame(rooms[newRoom]);
       }
 
-    });
+      });
+
+    // });
 
     socket.on('meme submission', function(sub) {
 
-      if (playrRef.hasOwnProperty(sub.user)) {
+      if (rooms[sub.room].playrRef.hasOwnProperty(sub.user)) {
         // Count submission
 
-        sub.round = roundSubs;
-        roundSubs++;
-        io.emit('generate card', sub);
+        sub.round = rooms[sub.room].roundSubs;
+        rooms[sub.room].roundSubs++;
 
-        if (roundSubs >= 4) {
+        io.to(sub.room).emit('generate card', sub);
+
+        if (rooms[sub.room].roundSubs >= 4) {
           // All four things submitted
-          roundSubs = 0;
-          clearInterval(roundInterval);
-          io.emit('judgment round')
+          rooms[sub.room].roundSubs = 0;
+          clearInterval(rooms[sub.room].roundInterval);
+          io.to(sub.room).emit('judgment round')
         }
       }
 
     });
 
-    socket.on('judge hovering', function(id) {
-      socket.broadcast.emit('judge looking', id)
+    socket.on('judge hovering', function(judge) {
+      socket.broadcast.to(judge.room).emit('judge looking', judge.id)
     });
 
-    socket.on('judge unhovering', function(id) {
-      socket.broadcast.emit('judge unlooking', id)
+    socket.on('judge unhovering', function(judge) {
+      socket.broadcast.to(judge.room).emit('judge unlooking', judge.id)
     });
 
     socket.on('decision', function(chosen) {
@@ -88,10 +113,11 @@ module.exports = function(io, db) {
       // winner = {
       //          playerID: Gjeo-BCRYUzLDVGIAAAF,  // Socket ID
       //          cardId: "card-1"                 // id = "card-1"
+      //          room: "Room1453"                 // Room id passed back and forth
       // }
 
-      var winner = playrRef[chosen.playerID];
-      io.emit('announce winner', {
+      var winner = rooms[chosen.room].playrRef[chosen.playerID];
+      io.to(chosen.room).emit('announce winner', {
         name: winner.user_name,
         card_id: chosen.cardId,
         uid: chosen.playerID
@@ -99,58 +125,55 @@ module.exports = function(io, db) {
       
     });
 
-    socket.on('player ready', function() {
-      playerReady++;
+    socket.on('player ready', function(room) {
+      rooms[room].playerReady++;
 
-      if(playerReady === 4 && running === false){
-        running = true;
-        countdown = 30;
-        clearInterval(roundInterval);
-        roundInterval = undefined;
+      if(rooms[room].playerReady === 4){
+        rooms[room].countdown = 30;
+        clearInterval(rooms[room].roundInterval);
 
-        roundInterval = function() {
-          if (countdown < 1) {
-            io.emit('round end');
+        rooms[room].roundInterval = function() {
+          if (rooms[room].countdown < 1) {
+            io.to(room).emit('round end');
             clearInterval(this);
           }
 
-          io.emit('timer', {
-            ct: countdown
+          io.to(room).emit('timer', {
+            ct: rooms[room].countdown
           });
 
-          countdown--;
+          rooms[room].countdown--;
         };
 
-        setInterval(roundInterval, 1000);
+        setInterval(rooms[room].roundInterval, 1000);
       }
 
     });
 
-    socket.on('next round', function() {
-      running = false;
+    socket.on('next round', function(room) {
       playerReady = 0;
-      StartGame();
+      StartGame(rooms[room]);
     });
 
     // TODO: NEEDS DEBUGGING, -- see Mikhail M.
     socket.on('disconnect', function(){
 
-      // Rebuild player array without disconnected user
-      // var remain = [];
-      //
-      // players.map(function(each) {
-      //   if(!each.id === socket.id){
-      //       remain.push(each);
-      //   }
-      // }, this);
-      // players = remain;
-
-    });
+    //   // Rebuild player array without disconnected user
+    //   var remain = [];
+    //
+    //   players.map(function(each) {
+    //     if(!each.id === socket.id){
+    //         remain.push(each);
+    //     }
+    //   }, this);
+    //   players = remain;
+    //
+    // });
 
   });
 
 
-  function StartGame() {
+  function StartGame(room) {
 
     db.Meme.find({
       order: [
@@ -160,16 +183,16 @@ module.exports = function(io, db) {
 
       round = {
         meme: meme,
-        judgeID: players[judgeInd].id
+        judgeID: room.players[room.judgeInd].id
       };
 
-      actJudge = players[judgeInd];
-      judgeInd >= players.length - 1 ? judgeInd = 0 : judgeInd++;
-      io.emit('start round', round);
+      room.actJudge = room.players[room.judgeInd];
+      room.judgeInd >= room.players.length - 1 ? room.judgeInd = 0 : room.judgeInd++;
+      io.to(room.room).emit('start round', round);
 
     });
   }
 
-
+});
 
 };

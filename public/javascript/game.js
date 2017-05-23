@@ -13,22 +13,24 @@ $(document).ready(function() {
 
     socket.on("userID", function(user) {
       self.id = user.uid;
+      self.room = user.room;
 
     });
 
     $('#message-submit').on('click', function(e) {
       e.preventDefault();
 
-      var messageInput = $('#message-input').val().trim();
+      var $messageInput = $('#message-input');
+      var message = $messageInput.val().trim();
 
-      if (messageInput !== '') {
+      if (message !== '') {
         var message = {
           name: self.user_name,
           photo: self.photo,
-          text: messageInput
+          text: message
         };
         socket.emit('chat message', message);
-        $('#message-input').val('')
+        $messageInput.val('')
 
       }
 
@@ -71,7 +73,7 @@ $(document).ready(function() {
         $('.topic-image').removeClass("player-judge");
         $(".choice-card-img").off('click');
       }
-      socket.emit('player ready');
+      socket.emit('player ready', self.room);
 
     });
 
@@ -83,7 +85,8 @@ $(document).ready(function() {
       $(".choice-card-img").on('click', function() {
         socket.emit('decision', {
           playerID: $(this).attr('data-id'),
-          cardId: $(this).attr('id')
+          cardId: $(this).attr('id'),
+          room: self.room
         });
         $(this).closest(".choice-card")
             .removeClass('judge-hover')
@@ -120,7 +123,7 @@ $(document).ready(function() {
       });
 
       if (judgeMode) {
-        socket.emit('next round');
+        socket.emit('next round', self.room);
       }
 
     }, 3000);
@@ -142,20 +145,19 @@ $(document).ready(function() {
       //console.log(item);
       $(".players").append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score" + item.uid + "'>" + item.score + "</span></div>");
 
-
     });
   });
 
 
   $(".choice-card-img").mouseenter(function() {
     if (judgeMode) {
-      socket.emit('judge hovering', $(this).attr('id'))
+      socket.emit('judge hovering', {id: $(this).attr('id'), room: self.room})
     }
   });
 
   $(".choice-card-img").mouseleave(function() {
     if (judgeMode) {
-      socket.emit('judge unhovering', $(this).attr('id'))
+      socket.emit('judge unhovering', {id: $(this).attr('id'), room: self.room})
     }
   });
 
@@ -209,6 +211,14 @@ $(document).ready(function() {
   });
 
   function generateCard(card) {
+
+    // card = {
+    //   user: user.id,
+    //   room: user.room,
+    //   meme: user.meme ||
+    //   'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
+    // };
+
     var choiceCards = document.getElementsByClassName("choice-card-img");
 
     $(choiceCards[card.round]).attr({
@@ -223,6 +233,7 @@ $(document).ready(function() {
   function SendSubmission(user) {
     submission = {
       user: user.id,
+      room: user.room,
       meme: user.meme ||
         'https://img.memesuper.com/8442baface38e99f6bfa4d828f13e05f_motivation-level-lazy-puppy-lazy-meme_428-247.jpeg'
     };
