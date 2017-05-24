@@ -2,7 +2,6 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-
     return queryInterface.bulkInsert('Memes', [
       { name: 'One Does Not Simply',
         url: 'https://i.imgflip.com/1bij.jpg',
@@ -305,7 +304,6 @@ module.exports = {
         url: 'https://i.imgflip.com/af002.jpg',
         imgFlipID: '17496002' } ]
      );
-
   },
 
   down: function (queryInterface, Sequelize) {

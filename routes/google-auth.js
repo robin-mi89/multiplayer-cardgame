@@ -1,20 +1,17 @@
-module.exports = function(app, passport)
-{
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+module.exports = function (app, passport) {
+  app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-    app.get('/auth/google/callback', 
-    passport.authenticate('google', 
+  app.get('/auth/google/callback',
+    passport.authenticate('google',
     { failureRedirect: '/' }),
-    function(req, res) 
-    {
-        //console.log("redirecting\n\n");
-        res.redirect('/');
+    function (req, res) {
+        // console.log("redirecting\n\n");
+      res.redirect('/');
     });
 
-    app.get('/api/user', function(req, res)
-    {
-        res.json(req.user);
-    });
+  app.get('/api/user', function (req, res) {
+    res.json(req.user);
+  });
     // {
     //     // TODO: DEBUGGING THIS
     //     //res.json(req.user);
@@ -25,10 +22,8 @@ module.exports = function(app, passport)
     //     ///////////////////////////////////////////////////////////////////////////////////////
     // });
 
-    app.get('/logout', function(req, res) 
-    {
-        req.logout();
-        res.redirect('/');
-    });
-
-}
+  app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+  });
+};

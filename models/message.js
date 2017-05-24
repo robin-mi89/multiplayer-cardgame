@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes){
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('Message', {
     message: {
       type: DataTypes.STRING,
@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes){
         len: [1]
       }
     }
-  },{
+  }, {
     classMethods: {
       associate: function (models) {
         this.belongsTo(models.User, {
@@ -17,5 +17,4 @@ module.exports = function(sequelize, DataTypes){
       }
     }
   });
-
 };

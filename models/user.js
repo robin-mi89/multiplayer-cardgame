@@ -1,43 +1,42 @@
-module.exports = function(sequelize, DataTypes) 
-{
-  return sequelize.define('User', 
-  {
-    user_name: 
+module.exports = function (sequelize, DataTypes) {
+  return sequelize.define('User',
     {
-      type: DataTypes.STRING,
-      validate:
+      user_name:
       {
-        len:[2]
+        type: DataTypes.STRING,
+        validate:
+        {
+          len: [2]
+        },
+        allowNull: false
       },
-      allowNull: false
-    },
-    googleID: 
-    {
+      googleID:
+      {
         type: DataTypes.STRING
-    },
-    token:
-    {
+      },
+      token:
+      {
         type: DataTypes.STRING
-    },
-    email:
-    {
+      },
+      email:
+      {
         type: DataTypes.STRING
-    },
-    wins:
-    {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    photo:
-    {
-      type: DataTypes.STRING
-    }
-
-  },{
-    classMethods: {
-      associate: function(models) {
-        this.hasMany(models.Message);
+      },
+      wins:
+      {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      photo:
+      {
+        type: DataTypes.STRING
       }
-    }
-  })
+
+    }, {
+      classMethods: {
+        associate: function (models) {
+          this.hasMany(models.Message);
+        }
+      }
+    });
 };

@@ -1,9 +1,9 @@
-module.exports = function(sequelize, DataTypes){
-  return sequelize.define("Meme", {
+module.exports = function (sequelize, DataTypes) {
+  return sequelize.define('Meme', {
     name: {
       type: DataTypes.STRING,
       validate: {
-        len:[1]
+        len: [1]
       }
     },
     url: {
@@ -19,8 +19,8 @@ module.exports = function(sequelize, DataTypes){
         len: [2]
       },
       allowNull: false
-  }
-  },{
+    }
+  }, {
     timestamps: false
   });
 };
