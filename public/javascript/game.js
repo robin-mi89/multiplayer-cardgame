@@ -1,10 +1,11 @@
 $(document).ready(function () {
-  var socket = io(),
-    self = {},
-    submitted = false,
-    roundSubs = 0,
-    judgeMode = false,
-    $topic = $('.topic-image');
+  var socket      = io(),
+      self        = {},
+      submitted   = false,
+      roundSubs   = 0,
+      judgeMode   = false,
+      $topic      = $('.topic-image'),
+      $choiceCard = $('.choice-card-img');
 
   $.get('/api/user', function (user) {
     self = user;
@@ -20,13 +21,13 @@ $(document).ready(function () {
       e.preventDefault();
 
       var $messageInput = $('#message-input');
-      var message = $messageInput.val().trim();
+      var text = $messageInput.val().trim();
 
-      if (message !== '') {
+      if (text !== '') {
         var message = {
           name: self.user_name,
           photo: self.photo,
-          text: message
+          text: text
         };
         socket.emit('chat message', message);
         $messageInput.val('');
@@ -64,7 +65,7 @@ $(document).ready(function () {
         // Players Mode
         judgeMode = false;
         $topic.removeClass('player-judge');
-        $('.choice-card-img').off('click');
+        $choiceCard.off('click');
       }
       socket.emit('player ready', self.room);
     });
@@ -72,7 +73,7 @@ $(document).ready(function () {
 
   socket.on('judgment round', function () {
     if (judgeMode) {
-      $('.choice-card-img').on('click', function () {
+      $choiceCard.on('click', function () {
         socket.emit('decision', {
           playerID: $(this).attr('data-id'),
           cardId: $(this).attr('id'),
@@ -132,13 +133,13 @@ $(document).ready(function () {
     });
   });
 
-  $('.choice-card-img').mouseenter(function () {
+  $choiceCard.mouseenter(function () {
     if (judgeMode) {
       socket.emit('judge hovering', {id: $(this).attr('id'), room: self.room});
     }
   });
 
-  $('.choice-card-img').mouseleave(function () {
+  $choiceCard.mouseleave(function () {
     if (judgeMode) {
       socket.emit('judge unhovering', {id: $(this).attr('id'), room: self.room});
     }
@@ -216,7 +217,8 @@ $(document).ready(function () {
     $('.choice-card').hide();
     $('.timer').show();
     $('#player-cards').show();
-    $('.choice-card-img').attr('src', '/image/waiting.jpg');
+    $choiceCard.attr('src', '/image/waiting.jpg');
     $('#choice-card-container').hide();
   }
 });
+
