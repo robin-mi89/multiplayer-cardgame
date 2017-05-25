@@ -1,9 +1,9 @@
 Sequelize = require('sequelize');
 module.exports = function (io, db) {
-  var pTotal = 4,
-    newRoom,
-    roomQueue = 0,
-    rooms = {};
+  var pTotal    = 4,
+      newRoom   = undefined,
+      roomQueue = 0,
+      rooms     = {};
 
   io.on('connection', function (socket) {
     socket.on('player join', function (user) {
