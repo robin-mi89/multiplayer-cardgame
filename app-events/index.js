@@ -1,12 +1,12 @@
 Sequelize = require('sequelize');
-module.exports = function (io, db) {
-  var pTotal    = 4,
-      newRoom   = undefined,
-      roomQueue = 0,
-      rooms     = {};
+module.exports = function(io, db) {
+  var pTotal = 4,
+    newRoom = undefined,
+    roomQueue = 0,
+    rooms = {};
 
-  io.on('connection', function (socket) {
-    socket.on('player join', function (user) {
+  io.on('connection', function(socket) {
+    socket.on('player join', function(user) {
       roomQueue++;
 
       user.id = socket.id;
@@ -34,7 +34,7 @@ module.exports = function (io, db) {
       // Activate chat
       require('./chat')(socket, db, io, newRoom);
 
-      var active = rooms[newRoom].players.map(function (each, i) {
+      var active = rooms[newRoom].players.map(function(each, i) {
         return {
           uid: each.id,
           name: each.user_name,
@@ -55,7 +55,10 @@ module.exports = function (io, db) {
       // When 4 players login Start game
       if (rooms[newRoom].players.length >= 4) {
         // Create object reference for players by their Socket.id
-        rooms[newRoom].playrRef = rooms[newRoom].players.reduce(function (map, user) {
+        rooms[newRoom].playrRef = rooms[newRoom].players.reduce(function(
+          map,
+          user
+        ) {
           map[user.id] = user;
           return map;
         }, {});
@@ -64,7 +67,7 @@ module.exports = function (io, db) {
       }
     });
 
-    socket.on('meme submission', function (sub) {
+    socket.on('meme submission', function(sub) {
       if (rooms[sub.room].playrRef.hasOwnProperty(sub.user)) {
         // Count submission
 
@@ -82,15 +85,15 @@ module.exports = function (io, db) {
       }
     });
 
-    socket.on('judge hovering', function (judge) {
+    socket.on('judge hovering', function(judge) {
       socket.broadcast.to(judge.room).emit('judge looking', judge.id);
     });
 
-    socket.on('judge unhovering', function (judge) {
+    socket.on('judge unhovering', function(judge) {
       socket.broadcast.to(judge.room).emit('judge unlooking', judge.id);
     });
 
-    socket.on('decision', function (chosen) {
+    socket.on('decision', function(chosen) {
       var winner = rooms[chosen.room].playrRef[chosen.playerID];
       io.to(chosen.room).emit('announce winner', {
         name: winner.user_name,
@@ -99,14 +102,14 @@ module.exports = function (io, db) {
       });
     });
 
-    socket.on('player ready', function (room) {
+    socket.on('player ready', function(room) {
       rooms[room].playerReady++;
 
       if (rooms[room].playerReady === 4) {
         rooms[room].countdown = 30;
         clearInterval(rooms[room].roundInterval);
 
-        rooms[room].roundInterval = function () {
+        rooms[room].roundInterval = function() {
           if (rooms[room].countdown < 1) {
             io.to(room).emit('round end');
             clearInterval(this);
@@ -123,43 +126,32 @@ module.exports = function (io, db) {
       }
     });
 
-    socket.on('next round', function (room) {
+    socket.on('next round', function(room) {
       rooms[room].playerReady = 0;
       StartGame(rooms[room]);
     });
 
-    // TODO: NEEDS DEBUGGING, -- see Mikhail M.
-    socket.on('disconnect', function () {
-
-    //   // Rebuild player array without disconnected user
-    //   var remain = [];
-    //
-    //   players.map(function(each) {
-    //     if(!each.id === socket.id){
-    //         remain.push(each);
-    //     }
-    //   }, this);
-    //   players = remain;
-    //
-    // });
-
+    socket.on('disconnect', function() {
+      // TODO: (LOG OUT) Procedure;
     });
 
-    function StartGame (room) {
-      db.Meme.find({
-        order: [
-          Sequelize.fn('RAND')
-        ]
-      }).then(function (meme) {
-        var round = {
-          meme: meme,
-          judgeID: room.players[room.judgeInd].id
-        };
+    function StartGame(room) {
+      db.Meme
+        .find({
+          order: [Sequelize.fn('RAND')]
+        })
+        .then(function(meme) {
+          var round = {
+            meme: meme,
+            judgeID: room.players[room.judgeInd].id
+          };
 
-        room.actJudge = room.players[room.judgeInd];
-        room.judgeInd >= room.players.length - 1 ? room.judgeInd = 0 : room.judgeInd++;
-        io.to(room.room).emit('start round', round);
-      });
+          room.actJudge = room.players[room.judgeInd];
+          room.judgeInd >= room.players.length - 1
+            ? (room.judgeInd = 0)
+            : room.judgeInd++;
+          io.to(room.room).emit('start round', round);
+        });
     }
   });
 };

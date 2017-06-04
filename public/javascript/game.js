@@ -5,7 +5,12 @@ $(document).ready(function () {
       roundSubs   = 0,
       judgeMode   = false,
       $topic      = $('.topic-image'),
-      $choiceCard = $('.choice-card-img');
+      $choiceCard = $('.choice-card-img'),
+      $bestMeme   = $('#best-meme'),
+      $playersDiv = $('.players'),
+      $playerCard = $('#player-cards'),
+      $choiceCont = $('#choice-card-container'),
+      $timer      = $('.timer');
 
   $.get('/api/user', function (user) {
     self = user;
@@ -105,10 +110,10 @@ $(document).ready(function () {
     // Set stuff in the winner modal
     $('#winner-modal-title').text('Winner: ' + winner.name);
     $('#winner-modal-meme').attr('src', card.attr('src'));
-    $('#best-meme').modal('show');
+    $bestMeme.modal('show');
 
     setTimeout(function () {
-      $('#best-meme').modal('hide').load(function () {
+      $bestMeme.modal('hide').load(function () {
 
       });
 
@@ -127,9 +132,9 @@ $(document).ready(function () {
   // add player-just class to player div to highlight judge
 
   socket.on('player added', function (players) {
-    $('.players').empty();
+    $playersDiv.empty();
     players.forEach(function (item, index) {
-      $('.players').append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score" + item.uid + "'>" + item.score + '</span></div>');
+      $playersDiv.append("<div class='player'><img class='player-image' src='" + item.photo + "'/><span class='player-score' id='score" + item.uid + "'>" + item.score + '</span></div>');
     });
   });
 
@@ -165,8 +170,8 @@ $(document).ready(function () {
       bottom: $bottomText.val().trim() || ''
     };
 
-    $('#player-cards').hide();
-    $('#choice-card-container').show();
+    $playerCard.hide();
+    $choiceCont.show();
     $topText.val('');
     $bottomText.val('');
 
@@ -181,9 +186,9 @@ $(document).ready(function () {
     if (!submitted) {
       SendSubmission(self);
     }
-    $('.timer').hide();
-    $('#player-cards').hide();
-    $('#choice-card-container').show();
+    $timer.hide();
+    $playerCard.hide();
+    $choiceCont.show();
   });
 
   socket.on('generate card', function (sub) {
@@ -215,10 +220,9 @@ $(document).ready(function () {
   function resetRound () {
     self.meme = null;
     $('.choice-card').hide();
-    $('.timer').show();
-    $('#player-cards').show();
+    $timer.show();
+    $playerCard.show();
     $choiceCard.attr('src', '/image/waiting.jpg');
-    $('#choice-card-container').hide();
+    $choiceCont.hide();
   }
 });
-
