@@ -8,12 +8,46 @@ var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
+var morgan = require('morgan');
+var helmet = require('helmet');
+var compression = require('compression');
+var fs = require('fs');
+var rfs = require('rotating-file-stream');
+var uuidV4 = require('uuid/v4');
 
 // Add routes here
 var index = require('./routes/index');
 var memes = require('./routes/memes');
 
 var app = express();
+
+// Middlewares
+app.use(helmet());
+app.use(compression());
+
+
+// morgan (logging library)
+const log = path.join(__dirname, './logs')
+
+fs.existsSync(log) || fs.mkdirSync(log)
+
+const accessLogStream = rfs('access.log', {
+  interval: '1d',
+  path: log
+})
+
+morgan.token('id', req => {
+  return req.id
+})
+app.use((req, res, next) => {
+  req.id = uuidV4()
+  next()
+})
+app.use(morgan(
+    ':id :method :url :status :res[content-length] - :response-time ms :date[web]',
+    { stream: accessLogStream },
+    { skip: (req, res) => res.statusCode < 400 }
+))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,7 +79,9 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
-    secret: 'whynotzoidberg'
+    secret: 'whynotzoidberg',
+    saveUninitialized: false,
+    resave: false
   })
 );
 
